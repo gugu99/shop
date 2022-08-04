@@ -20,5 +20,10 @@
 	<%=session.getAttribute("name") %> <!-- 로그인 이름 -->
 	<br/>
 	<a href="<%=request.getContextPath()%>/logout.jsp">로그아웃</a>
+	<br/>
+	<form action="<%=request.getContextPath()%>/removeMember.jsp">
+		<input type="password" name="memberPass"/>
+		<button type="submit">탈퇴</button>
+	</form>
 </body>
 </html>

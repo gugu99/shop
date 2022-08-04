@@ -1,8 +1,11 @@
-<%@page import="dao.EmployeeDao"%>
+<%@page import="service.EmployeeService"%>
+<%@page import="repository.EmployeeDao"%>
 <%@page import="vo.Employee"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
+	System.out.println("\n--------------------employeeLoginAction.jsp");
+	
 	if (session.getAttribute("user") != null) { // 로그인 상태면 index.jsp로 이동
 		response.sendRedirect(request.getContextPath()+"/index.jsp");
 		return;
@@ -20,9 +23,13 @@
 	employee.setEmployeeId(employeeId);
 	employee.setEmployeePass(employeePass);
 	
-	EmployeeDao employeeDao = new EmployeeDao();
+	System.out.println("employee --- " + employee); // 디버깅
 	
-	Employee loginEmployee = employeeDao.login(employee);
+	EmployeeService employeeService = new EmployeeService();
+	
+	Employee loginEmployee = employeeService.getEmployeeByIdAndPw(employee);
+	
+	System.out.println("loginEmployee --- " + loginEmployee); // 디버깅
 	
 	if (loginEmployee != null) {
 		session.setAttribute("user", "employee");

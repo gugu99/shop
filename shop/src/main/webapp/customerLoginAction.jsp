@@ -1,8 +1,10 @@
-<%@page import="dao.CustomerDao"%>
+<%@page import="service.CustomerService"%>
 <%@page import="vo.Customer"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
+	System.out.println("\n--------------------employeeLoginAction.jsp");	
+
 	if (session.getAttribute("user") != null) { // 로그인 상태면 index.jsp로 이동
 		response.sendRedirect(request.getContextPath()+"/index.jsp");
 		return;
@@ -12,13 +14,17 @@
 	String customerId = request.getParameter("customerId");
 	String customerPass = request.getParameter("customerPass");
 	
+	// 디버깅
+	System.out.println("customerId --- " + customerId);
+	System.out.println("customerPass --- " + customerPass);
+	
 	Customer customer = new Customer();
 	customer.setCustomerId(customerId);
 	customer.setCustomerPass(customerPass);
 	
-	CustomerDao customerDao = new CustomerDao();
+	CustomerService customerService = new CustomerService();
 	
-	Customer loginCustomer = customerDao.login(customer);
+	Customer loginCustomer = customerService.getCustomerByIdAndPw(customer);
 	
 	if (loginCustomer != null) {
 		session.setAttribute("user", "customer");
