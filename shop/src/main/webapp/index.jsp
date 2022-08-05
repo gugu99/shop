@@ -50,6 +50,7 @@
 				<button type="submit">탈퇴</button>
 			</form>
 		</div>
+		<a href="./adminIndex.jsp">관리자페이지 - 사원관리(리스트), 상품관리(리스트-삭제없음->품절로변경), 고객관리(리스트), 주문관리(리스트-배송상태), 공지관리(리스트)</a>
 	</section><!--/form-->
 	
 	<%@include file="/footer.jsp" %><!-- footer -->

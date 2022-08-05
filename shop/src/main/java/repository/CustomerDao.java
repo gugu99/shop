@@ -10,6 +10,38 @@ import vo.Customer;
 
 public class CustomerDao {
 	
+	// 회원가입
+	public int insertCustomer(Connection conn, Customer paramCustomer) throws SQLException {
+		System.out.println("\n--------------------Customer.insertCustomer()");
+		
+		int result = 0;
+		String sql = "INSERT INTO customer VALUES (?, PASSWORD(?), ?, ?, ?, NOW(), NOW())";
+		PreparedStatement stmt = null;
+		
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, paramCustomer.getCustomerId());
+			stmt.setString(2, paramCustomer.getCustomerPass());
+			stmt.setString(3, paramCustomer.getCustomerName());
+			stmt.setString(4, paramCustomer.getCustomerAddress());
+			stmt.setString(5, paramCustomer.getCustomerTelephone());
+			
+			System.out.println("stmt --- " + stmt); // 디버깅
+			System.out.println("paramCustomer --- " + paramCustomer); // 디버깅
+			
+			result = stmt.executeUpdate();
+			
+			System.out.println("result --- " + result); // 디버깅
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		
+		
+		return result;
+	}
+	
 	// 탈퇴
 	// CustomerService.removeCustomer(Customer customer) 호출
 	public int deleteCustomer(Connection conn, Customer paramCustomer) throws SQLException {

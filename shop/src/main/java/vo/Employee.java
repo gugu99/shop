@@ -6,6 +6,7 @@ public class Employee {
 	private String employeeName;
 	private String createDate;
 	private String updateDate;
+	private String active;
 	
 	public String getEmployeeId() {
 		return employeeId;
@@ -37,11 +38,18 @@ public class Employee {
 	public void setUpdateDate(String updateDate) {
 		this.updateDate = updateDate;
 	}
+	public String getActive() {
+		return active;
+	}
+	public void setActive(String active) {
+		this.active = active;
+	}
 	
 	@Override
 	public String toString() {
 		return "Employee [employeeId=" + employeeId + ", employeePass=" + employeePass + ", employeeName="
-				+ employeeName + ", createDate=" + createDate + ", updateDate=" + updateDate + "]";
+				+ employeeName + ", createDate=" + createDate + ", updateDate=" + updateDate + ", active=" + active
+				+ "]";
 	}
 	
 }

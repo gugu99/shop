@@ -9,21 +9,60 @@ import vo.Customer;
 
 public class CustomerService {
 	
-	// 회원탈퇴 액션페이지에서 호출되는 메서드
-	public boolean removeCustomer(Customer paramCustomer) {
+	private DBUtil dbUtil;
+	private CustomerDao customerDao;
+	private OutIdDao outIdDao;
+	
+	// addCustomerAction.jsp에서 호출(회원가입)
+	public boolean addCustomer(Customer paramCustomer) {
 		
 		Connection conn = null;
-		DBUtil dbUtil = new DBUtil();
+		dbUtil = new DBUtil();
 		
 		try {
 			conn = dbUtil.getConnection();
 			conn.setAutoCommit(false); // executeUpdate();실행시 자동 커밋을 막는다.
 			
-			CustomerDao customerDao = new CustomerDao();
+			customerDao = new CustomerDao();
+			
+			if (customerDao.insertCustomer(conn, paramCustomer) != 1) {
+				throw new Exception(); // 강제 예외처리
+			}
+			conn.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		} finally {
+			if(conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return true;
+	}
+	
+	// 회원탈퇴 액션페이지에서 호출되는 메서드
+	public boolean removeCustomer(Customer paramCustomer) {
+		
+		Connection conn = null;
+		dbUtil = new DBUtil();
+		
+		try {
+			conn = dbUtil.getConnection();
+			conn.setAutoCommit(false); // executeUpdate();실행시 자동 커밋을 막는다.
+			
+			customerDao = new CustomerDao();
 			if (customerDao.deleteCustomer(conn, paramCustomer) != 1) {
 				throw new Exception(); // 강제 예외처리
 			}
-			OutIdDao outIdDao = new OutIdDao();
+			outIdDao = new OutIdDao();
 			if (outIdDao.insertOutId(conn, paramCustomer.getCustomerId()) != 1) {
 				throw new Exception(); // 강제 예외처리
 			}
@@ -55,13 +94,13 @@ public class CustomerService {
 	public Customer getCustomerByIdAndPw(Customer paramCustomer) {
 		
 		Connection conn = null;
-		DBUtil dbUtil = new DBUtil();
+		dbUtil = new DBUtil();
 		Customer customer = null;
 		
 		try {
 			conn= dbUtil.getConnection();
 			
-			CustomerDao customerDao = new CustomerDao();
+			customerDao = new CustomerDao();
 			customer = customerDao.selectCustomerByIdAndPw(conn, paramCustomer);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

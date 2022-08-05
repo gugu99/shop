@@ -33,7 +33,7 @@
 				<div class="row">
 					<div class="col-sm-4">
 						<div class="logo pull-left">
-							<a href="index.html"><img src="images/logo.png" alt="로고이미지" /></a>
+							<a href="index.jsp"><img src="images/logo.png" alt="로고이미지" /></a>
 						</div>
 						<div class="btn-group pull-right">
 						</div>
@@ -49,7 +49,7 @@
 									if (session.getAttribute("user") == null) { // 로그인 상태가 아닐 경우 
 								%>
 									<li><a href="<%=request.getContextPath() %>/loginForm.jsp"><i class="fa fa-lock"></i> Login</a></li>
-									<li><a href="<%=request.getContextPath() %>/loginForm.jsp"><i class="fa fa-plus"></i> Sign up</a></li>
+									<li><a href="<%=request.getContextPath() %>/addMember.jsp"><i class="fa fa-plus"></i> Sign Up</a></li>
 								<%
 									} else {
 								%>
@@ -79,14 +79,14 @@
 						</div>
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
-								<li><a href="index.html">Home</a></li>
+								<li><a href="index.jsp">Home</a></li>
 								<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
                                         <li><a href="shop.html">Products</a></li>
 										<li><a href="product-details.html">Product Details</a></li> 
 										<li><a href="checkout.html">Checkout</a></li> 
 										<li><a href="cart.html">Cart</a></li> 
-										<li><a href="login.html" class="active">Login</a></li> 
+										<li><a href="loginForm.jsp" >Login</a></li> 
                                     </ul>
                                 </li> 
 								<li class="dropdown"><a href="#">Blog<i class="fa fa-angle-down"></i></a>

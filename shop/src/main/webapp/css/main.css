@@ -563,6 +563,8 @@ ul.sub-menu {
 }
 
 
+
+
 /*************************
 ******* Home ******
 **************************/
@@ -1430,6 +1432,10 @@ h2.title {
   margin-bottom: 185px;
   margin-top: 185px;
   overflow: hidden;
+}
+
+.error-msg {
+	color: red;
 }
 
 .login-form {

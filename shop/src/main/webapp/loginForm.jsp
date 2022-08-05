@@ -39,15 +39,15 @@
 	
 	<section id="form"><!--form-->
 		<div class="container">
-			<div>
-				<%
-					if (request.getParameter("errorMsg") != null) { // 에러메세지가 있으면 에러메세지 출력
-				%>
-					<span><%=request.getParameter("errorMsg") %></span>
-				<%
-					}
-				%>
-			</div>
+		<div>
+			<%
+				if (request.getParameter("errorMsg") != null) { // 에러메세지가 있으면 에러메세지 출력
+			%>
+				<span class="error-msg"><%=request.getParameter("errorMsg") %></span>
+			<%
+				}
+			%>
+		</div>
 			<div class="row">
 				<div class="col-sm-4 col-sm-offset-1">
 					<div class="login-form"><!--customerLogin form-->
@@ -106,9 +106,9 @@
 		$(function(){ 
 			$('#employeeBtn').click(function(){
 				if($('#employeeId').val() == '') {
-					alert('스탭아이디를 입력하세요!');
+					alert('직원아이디를 입력하세요!');
 				} else if($('#employeePass').val() == '') {
-					alert('스탭패스워드를 입력하세요!');
+					alert('직원패스워드를 입력하세요!');
 				} else {
 					employeeForm.submit();
 				}

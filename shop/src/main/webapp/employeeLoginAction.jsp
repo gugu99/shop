@@ -31,7 +31,7 @@
 	
 	System.out.println("loginEmployee --- " + loginEmployee); // 디버깅
 	
-	if (loginEmployee != null) {
+	if (loginEmployee != null && loginEmployee.getActive().equals("Y")) {
 		session.setAttribute("user", "employee");
 		session.setAttribute("id", loginEmployee.getEmployeeId());
 		session.setAttribute("name", loginEmployee.getEmployeeName());
