@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-	if (session.getAttribute("user") != null) { // 로그인 상태면 index.jsp로 이동
-		response.sendRedirect(request.getContextPath()+"/index.jsp");
+	if (session.getAttribute("user") == null) { // 로그인 상태가 아닐 경우 loginForm.jsp로 이동
+		response.sendRedirect(request.getContextPath()+"/loginForm.jsp");
 		return;
 	}	
 %>
@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Login</title>
+    <title>Index</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
     <link href="css/prettyPhoto.css" rel="stylesheet">
@@ -39,52 +39,16 @@
 	
 	<section id="form"><!--form-->
 		<div class="container">
-			<div>
-				<%
-					if (request.getParameter("errorMsg") != null) { // 에러메세지가 있으면 에러메세지 출력
-				%>
-					<span><%=request.getParameter("errorMsg") %></span>
-				<%
-					}
-				%>
-			</div>
-			<div class="row">
-				<div class="col-sm-4 col-sm-offset-1">
-					<div class="login-form"><!--customerLogin form-->
-						<h2>고객 로그인</h2>
-						<form action="<%=request.getContextPath() %>/customerLoginAction.jsp" method="post" id="customerForm">
-							<label for="customerId">ID</label>
-							<input type="text" name="customerId" id="customerId" placeholder="Enter Id" />
-							<label for="customerPass">PASSWORD</label>
-							<input type="password" name="customerPass" id="customerPass" placeholder="Enter Password" />
-							<span>
-								<input type="checkbox" class="checkbox"> 
-								Keep me signed in
-							</span>
-							<button type="button" id="customerBtn" class="btn btn-default pull-right">로그인</button>
-						</form>
-					</div><!--/customerLogin form-->
-				</div>
-				<div class="col-sm-1">
-					<h2 class="or">OR</h2>
-				</div>
-				<div class="col-sm-4">
-					<div class="login-form"><!--employeeLogin form-->
-						<h2>직원 로그인</h2>
-						<form action="<%=request.getContextPath() %>/employeeLoginAction.jsp" method="post" id="employeeForm">
-							<label for="employeeId">ID</label>
-							<input type="text" name="employeeId" id="employeeId" placeholder="Enter Id" />
-							<label for="employeePass">PASSWORD</label>
-							<input type="password" name="employeePass" id="employeePass" placeholder="Enter Password" />
-							<span>
-								<input type="checkbox" class="checkbox"> 
-								Keep me signed in
-							</span>
-							<button type="button" id="employeeBtn" class="btn btn-default pull-right">로그인</button>
-						</form>
-					</div><!--/employeeLogin form-->
-				</div>
-			</div>
+			user : <%=session.getAttribute("user") %> <!-- customer / employee -->
+			<br/>
+			id : <%=session.getAttribute("id") %> <!-- 로그인아이디 -->
+			<br/>
+			name : <%=session.getAttribute("name") %> <!-- 로그인 이름 -->
+			<br/>
+			<form action="<%=request.getContextPath()%>/removeMember.jsp">
+				<input type="password" name="memberPass"/>
+				<button type="submit">탈퇴</button>
+			</form>
 		</div>
 	</section><!--/form-->
 	
