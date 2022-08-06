@@ -19,7 +19,7 @@ public class EmployeeDao {
 		System.out.println("\n--------------------Employee.updateEmployeeActive()");
 		
 		int result = 0;
-		String sql = "UPDATE employee SET active = ? WHERE employee_id = ?";
+		String sql = "UPDATE employee SET active = ?, update_date = NOW() WHERE employee_id = ?";
 		PreparedStatement stmt = null;
 		
 		try {
