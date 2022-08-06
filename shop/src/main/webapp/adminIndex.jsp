@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Index</title>
+    <title>Admin Index</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
     <link href="css/prettyPhoto.css" rel="stylesheet">
@@ -20,6 +20,7 @@
     <link href="css/animate.css" rel="stylesheet">
 	<link href="css/main.css" rel="stylesheet">
 	<link href="css/responsive.css" rel="stylesheet">
+	<link href="css/button-menu.css" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="js/html5shiv.js"></script>
     <script src="js/respond.min.js"></script>
@@ -30,31 +31,32 @@
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head><!--/head-->
 
 <body>
 	
 	<%@include file="/header.jsp" %><!-- header -->
 	
-	<section id="form"><!--form-->
-		<div class="container">
-			user : <%=session.getAttribute("user") %> <!-- customer / employee -->
-			<br/>
-			id : <%=session.getAttribute("id") %> <!-- 로그인아이디 -->
-			<br/>
-			name : <%=session.getAttribute("name") %> <!-- 로그인 이름 -->
-			<br/>
-			<form action="<%=request.getContextPath()%>/removeMember.jsp">
-				<input type="password" name="memberPass"/>
-				<button type="submit">탈퇴</button>
-			</form>
+	<!-- button menu -->
+	<div class="container">
+	    <h1 class="text-center">
+	    	<%=session.getAttribute("id") %>(<%=session.getAttribute("user") %>) - <%=session.getAttribute("name") %> 님 반갑습니다. 
+	    </h1>
+	    <hr class="my-5" />
+	    
+		<div class="text-center">
+			    <button class="col btn btn-purple-moon btn-rounded" onclick="location.href='<%=request.getContextPath()%>/employeeList.jsp'">사원관리</button>
+			    <button class="col btn btn-ultra-voilet btn-rounded">상품관리</button>
+			    <button class="col btn btn-pink-moon btn-rounded">고객관리</button>
+			    <button class="col btn btn-cool-blues btn-rounded">주문관리</button>
+			    <button class="col btn btn-dark-blue btn-rounded">공지관리</button>
 		</div>
-		<a href="./adminIndex.jsp">관리자페이지 - 사원관리(리스트), 상품관리(리스트-삭제없음->품절로변경), 고객관리(리스트), 주문관리(리스트-배송상태), 공지관리(리스트)</a>
-	</section><!--/form-->
+		<hr class="my-5" />
+	</div> <!-- button menu end -->
 	
 	<%@include file="/footer.jsp" %><!-- footer -->
-	
 	
     <script src="js/jquery.js"></script>
 	<script src="js/price-range.js"></script>

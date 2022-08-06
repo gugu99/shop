@@ -26,14 +26,8 @@ public class SignService {
 				result = true;
 			}
 			
-			conn.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
-			try {
-				conn.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
 		} finally {
 			if (conn != null) {
 				try {

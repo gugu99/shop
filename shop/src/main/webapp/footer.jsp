@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <footer id="footer"><!--Footer-->
-		<div class="footer-top">
+		<!-- <div class="footer-top">
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-2">
@@ -80,7 +80,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 		
 		<div class="footer-widget">
 			<div class="container">
