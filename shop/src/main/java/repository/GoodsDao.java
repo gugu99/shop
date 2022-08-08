@@ -14,6 +14,90 @@ import vo.Goods;
 
 public class GoodsDao {
 	
+	// 상품 수정하기
+	public int updateGoods(Connection conn, Goods paramGoods) throws SQLException {
+		System.out.println("\n--------------------GoodsDao.updateGoods()");
+		
+		int result = 0;
+		String sql = "UPDATE goods SET goods_name = ?, goods_price = ?, sold_out = ?, update_date = NOW() WHERE goods_no = ?";
+		PreparedStatement stmt = null;
+		
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, paramGoods.getGoodsName());
+			stmt.setInt(2, paramGoods.getGoodsPrice());
+			stmt.setString(3, paramGoods.getSoldOut());
+			stmt.setInt(4, paramGoods.getGoodsNo());
+			
+			System.out.println("stmt --- " + stmt); // 디버깅
+			
+			result = stmt.executeUpdate();
+			
+			System.out.println("result --- " + result); // 디버깅
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		
+		return result;
+	}
+	
+	// 상품 품절 여부 수정
+	public int updateGoodsSoldOut(Connection conn, Goods paramGoods) throws SQLException {
+		System.out.println("\n--------------------GoodsDao.updateSoldOut()");
+		
+		int result = 0;
+		String sql = "UPDATE goods SET sold_out = ? WHERE goods_no = ?";
+		PreparedStatement stmt = null;
+		
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, paramGoods.getSoldOut());
+			stmt.setInt(2, paramGoods.getGoodsNo());
+			
+			System.out.println("stmt --- " + stmt); // 디버깅
+			
+			result = stmt.executeUpdate();
+			
+			System.out.println("result --- " + result); // 디버깅
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		
+		return result;
+	}
+	
+	// 상품 삭제
+	// 반화 : key 값 (jdbc api)
+	public int deleteGoods(Connection conn, int goodsNo) throws SQLException {
+		System.out.println("\n--------------------GoodsDao.deleteGoods()");
+		
+		int result = 0;
+		String sql = "DELETE FROM goods WHERE goods_no = ?";
+		PreparedStatement stmt = null;
+		
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, goodsNo);
+			
+			System.out.println("stmt --- " + stmt); // 디버깅
+			
+			result = stmt.executeUpdate();
+			
+			System.out.println("result --- " + result); // 디버깅
+			
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		
+		return result;
+	}
+	
 	// 상품 등록
 	// 반화 : key 값 (jdbc api)
 	public int insertGoods(Connection conn, Goods paramGoods) throws SQLException {
@@ -28,7 +112,9 @@ public class GoodsDao {
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, paramGoods.getGoodsName());
 			stmt.setInt(2, paramGoods.getGoodsPrice());
-			stmt.setString(3, paramGoods.getSoldeOut());
+			stmt.setString(3, paramGoods.getSoldOut());
+			
+			System.out.println("stmt --- " + stmt); // 디버깅
 			// 1) insert
 			stmt.executeUpdate(); // insert 성공한 row수
 			// 2) select last_key from...
@@ -158,7 +244,7 @@ public class GoodsDao {
 				goods.setGoodsPrice(rs.getInt("goodsPrice"));
 				goods.setCreateDate(rs.getString("createDate"));
 				goods.setUpdateDate(rs.getString("updateDate"));
-				goods.setSoldeOut(rs.getString("soldOut"));
+				goods.setSoldOut(rs.getString("soldOut"));
 				
 				list.add(goods);
 			}

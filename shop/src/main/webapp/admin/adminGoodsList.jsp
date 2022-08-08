@@ -4,6 +4,8 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
+	System.out.println("\n--------------------adminGoodsList.jsp");	
+
 	if (session.getAttribute("user") == null || !((String)session.getAttribute("user")).equals("employee")) { // 로그인상태가 아닌경우 loginForm.jsp로 이동 -> 로그인상태지만 사원이 아닌경우 index.jsp로 이동
 		response.sendRedirect(request.getContextPath()+"/loginForm.jsp");
 		return;
@@ -67,7 +69,6 @@
 	            <th>CREATE_DATE</th>
 	            <th>UPDATE_DATE</th>
 	            <th>SOLDOUT</th>
-	            <th>상품삭제</th>
 	        </tr>
 	    </thead>
 	    	<%
@@ -83,27 +84,28 @@
 	                	<form action="<%=request.getContextPath() %>/admin/modifyGoodsSoldOutAction.jsp" method="post">
 	                		<input type="hidden" name="goodsNo" value="<%=g.getGoodsNo() %>" />
 	                		<%
-	                			if(g.getSoldeOut().equals("N")) {
+	                			if(g.getSoldOut().equals("N")) {
 	                		%>
-	                			<input type="radio" name="active" value="Y"  id="Y"   />
+	                			<input type="radio" name="soldOut" value="Y"  id="Y"   />
 								<label for="Y">Y</label>
-								<input type="radio" name="active" value="N"  id="N"  checked/>
+								<input type="radio" name="soldOut" value="N"  id="N"  checked/>
 								<label for="N">N</label>
 	                		<%
 	                			} else {
 	                		%>
-	                			<input type="radio" name="active" value="Y"  id="Y"  checked />
+	                			<input type="radio" name="soldOut" value="Y"  id="Y"  checked />
 								<label for="Y">Y</label>
-								<input type="radio" name="active" value="N"  id="N" />
+								<input type="radio" name="soldOut" value="N"  id="N" />
 								<label for="N">N</label>
 	                		<%
 	                			}
 	                		%>
 	                		
-						    <button type="submit" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-edit"></span> Edit</button>
+						    <button type="submit" class="btn btn-info btn-xs">
+						    	<span class="glyphicon glyphicon-edit"></span> Edit
+						    </button>
 						</form>
 	                </td>
-	                <td><a href="#" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Del</a></td>
 	            </tr>
 	           <%
 	    		}

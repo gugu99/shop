@@ -4,7 +4,7 @@ public class Goods {
 	private int goodsNo;
 	private String goodsName;
 	private int goodsPrice;
-	private String soldeOut;
+	private String soldOut;
 	private String createDate;
 	private String updateDate;
 	
@@ -26,11 +26,11 @@ public class Goods {
 	public void setGoodsPrice(int goodsPrice) {
 		this.goodsPrice = goodsPrice;
 	}
-	public String getSoldeOut() {
-		return soldeOut;
+	public String getSoldOut() {
+		return soldOut;
 	}
-	public void setSoldeOut(String soldeOut) {
-		this.soldeOut = soldeOut;
+	public void setSoldOut(String soldOut) {
+		this.soldOut = soldOut;
 	}
 	public String getCreateDate() {
 		return createDate;
@@ -47,7 +47,7 @@ public class Goods {
 	
 	@Override
 	public String toString() {
-		return "Goods [goodsNo=" + goodsNo + ", goodsName=" + goodsName + ", goodsPrice=" + goodsPrice + ", soldeOut="
-				+ soldeOut + ", createDate=" + createDate + ", updateDate=" + updateDate + "]";
+		return "Goods [goodsNo=" + goodsNo + ", goodsName=" + goodsName + ", goodsPrice=" + goodsPrice + ", soldOut="
+				+ soldOut + ", createDate=" + createDate + ", updateDate=" + updateDate + "]";
 	}
 }

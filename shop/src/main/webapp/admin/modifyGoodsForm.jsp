@@ -1,7 +1,4 @@
-<%@page import="java.util.Set"%>
 <%@page import="java.util.Map"%>
-<%@page import="java.text.DecimalFormat"%>
-<%@page import="vo.Goods"%>
 <%@page import="service.GoodsService"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
@@ -12,12 +9,11 @@
 	}
 	
 	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
-
+	
 	Map<String, Object> goodsMap = null;
 	GoodsService goodsService = new GoodsService();
 	
 	goodsMap = goodsService.getGoodsAndImgOne(goodsNo);
-	
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -44,39 +40,70 @@
 	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head><!--/head-->
-
 <body>
-	
+
 	<%@include file="/header.jsp" %><!-- header -->
 	
 	<%@include file="/admin/adminMenu.jsp" %><!-- button menu -->
-	<section id="form"><!--form-->
-		<h2 class="text-center">상품 상세보기</h2>
+	
+	<section id="form">
 		<div class="container">
 			<div class="row">
-				<div class="col-sm-5 col-sm-offset-1">
-		            <img width="450" height="427" alt="상품이미지" src="<%=request.getContextPath() %>/upload/<%=goodsMap.get("filename")%>">
-				</div>
-				<div class="col-sm-6">
-					<table class="table table-striped custab">
-						<%
-							for (String key : goodsMap.keySet()) {
-								Object s = goodsMap.get(key);
-						%>
-					        <tr>
-					            <th><%=key %></th>
-					            <td><%=s %></td>
-					        </tr>
-					     <%
-							}
-					     %>
-				    </table>
+			<div class="col-sm-6 col-sm-offset-3">
+					<div class="form-group">
+						<h2>상품 수정</h2>
+						<form action="<%=request.getContextPath()%>/admin/modifyGoodsAction.jsp" method="post" enctype="multipart/form-data">
+							<input type="hidden" name="goodsNo" value="<%=goodsNo%>"/>
+							<input type="hidden" name="preFilename" value="<%=goodsMap.get("filename")%>"/>
+							<table class="table table-striped custab">
+								<tr>
+									<th>상품 이름</th>
+									<td>
+										<input type="text" name="goodsName" id="goodsName" class="form-control" value="<%=goodsMap.get("goodsName") %>" />
+									</td>
+								</tr>
+								<tr>
+									<th>상품 가격</th>
+									<td>
+										<input type="text" name="goodsPrice" id="goodsPrice" class="form-control" value="<%=goodsMap.get("goodsPrice") %>" />
+									</td>
+								</tr>
+								<tr>
+									<th>품절 여부</th>
+									<td>
+										<%
+				                			if(goodsMap.get("soldOut").equals("N")) {
+				                		%>
+				                			<input type="radio" name="soldOut" value="Y"  id="Y"   />
+											<label for="Y">Y</label>
+											<input type="radio" name="soldOut" value="N"  id="N"  checked/>
+											<label for="N">N</label>
+				                		<%
+				                			} else {
+				                		%>
+				                			<input type="radio" name="soldOut" value="Y"  id="Y"  checked />
+											<label for="Y">Y</label>
+											<input type="radio" name="soldOut" value="N"  id="N" />
+											<label for="N">N</label>
+				                		<%
+				                			}
+				                		%>
+									</td>
+								</tr>
+								<tr>
+									<th>상품 이미지</th>
+									<td>
+										<input type="file" name="imgFile" id="imgFile"/>
+									</td>
+								</tr>
+							</table>
+							<div class="text-right">
+								<button type="submit" class="btn btn-ultra-voilet btn-rounded">상품 수정</button>
+							</div>
+						</form>
+					</div>
 				</div>
 			</div>
-			<div class="text-right">
-				<button class="btn btn-ultra-voilet btn-rounded" onclick="location.href='<%=request.getContextPath()%>/admin/modifyGoodsForm.jsp?goodsNo=<%=goodsNo%>'">상품수정</button>
-		    	<button class="btn btn-orange-moon btn-rounded" onclick="location.href='<%=request.getContextPath()%>/admin/removeGoodsAction.jsp?goodsNo=<%=goodsNo%>&filename=<%=goodsMap.get("filename")%>'">상품삭제</button>
-		    </div>
 		</div>
 	</section>
 	

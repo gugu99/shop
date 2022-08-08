@@ -41,22 +41,42 @@
 	<section id="form">
 		<div class="container">
 			<div class="row">
-			<div class="col-sm-4 col-sm-offset-4">
-					<div class="login-form">
+			<div class="col-sm-6 col-sm-offset-3">
+					<div class="form-group">
 						<h2>상품 등록</h2>
 						<form action="<%=request.getContextPath()%>/admin/addGoodsAction.jsp" method="post" enctype="multipart/form-data">
-							<label for="imgFile">imgFile</label>
-							<input type="file" name="imgFile" id="imgFile" />
-							<label for="goodsName">GOODS NAME</label>
-							<input type="text" name="goodsName" id="goodsName" placeholder="Enter goodsName" />
-							<label for="goodsPrice">GOODS PRICE</label>
-							<input type="text" name="goodsPrice" id="goodsPrice" placeholder="Enter goodsPrice" />
-							<label for="soldOut">SOLD OUT</label>
-							<input type="radio" name="soldOut" value="Y"  id="Y"/>
-							<label for="Y">Y</label>
-							<input type="radio" name="soldOut" value="N"  id="N" checked/>
-							<label for="N">N</label>
-							<button type="submit">상품 등록</button>
+							<table class="table table-striped custab">
+								<tr>
+									<th>상품 이름</th>
+									<td>
+										<input type="text" name="goodsName" id="goodsName" class="form-control" placeholder="Enter goodsName" />
+									</td>
+								</tr>
+								<tr>
+									<th>상품 가격</th>
+									<td>
+										<input type="text" name="goodsPrice" id="goodsPrice" class="form-control" placeholder="Enter goodsPrice" />
+									</td>
+								</tr>
+								<tr>
+									<th>품절 여부</th>
+									<td>
+										<input type="radio" name="soldOut" value="Y"  id="Y"/>
+										<label for="Y">Y</label>
+										<input type="radio" name="soldOut" value="N"  id="N" checked/>
+										<label for="N">N</label>
+									</td>
+								</tr>
+								<tr>
+									<th>상품 이미지</th>
+									<td>
+										<input type="file" name="imgFile" id="imgFile"/>
+									</td>
+								</tr>
+							</table>
+							<div class="text-right">
+								<button type="submit" class="btn btn-ultra-voilet btn-rounded">상품 등록</button>
+							</div>
 						</form>
 					</div>
 				</div>

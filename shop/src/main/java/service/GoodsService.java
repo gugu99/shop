@@ -18,6 +18,131 @@ public class GoodsService {
 	private GoodsDao goodsDao;
 	private GoodsImgDao goodsImgDao;
 	
+	// 상품 수정하기
+	public boolean modifyGoods(Goods paramGoods, GoodsImg paramGoodsImg) {
+		
+		Connection conn = null;
+		dbUtil = new DBUtil();
+		
+		try {
+			conn = dbUtil.getConnection();
+			conn.setAutoCommit(false); // 자동 커밋을 막는다.
+			
+			goodsDao = new GoodsDao();
+			if (goodsDao.updateGoods(conn, paramGoods) != 1) { // 상품 수정 실패시
+				throw new Exception(); // 강제로 예외를 만든다.
+			}
+			
+			goodsImgDao = new GoodsImgDao();
+			if (goodsImgDao.updateGoodsImg(conn, paramGoodsImg) != 1) { // 상품 이미지 수정 실패시
+				throw new Exception(); // 강제로 예외를 만든다.
+			}
+			
+			conn.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			return false;
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return true;
+	}
+	
+	// 상품 품절 여부 수정
+	public boolean modifyGoodsSoldOut(Goods paramGoods) {
+		
+		Connection conn = null;
+		dbUtil = new DBUtil();
+		
+		try {
+			conn = dbUtil.getConnection();
+			conn.setAutoCommit(false); // 자동 커밋을 막는다.
+			
+			goodsDao = new GoodsDao();
+			
+			if (goodsDao.updateGoodsSoldOut(conn, paramGoods) != 1) { // 품절 여부 수정 실패시
+				throw new Exception(); // 강제로 예외를 만든다.
+			}
+			
+			conn.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			return false;
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return true;
+	}
+	
+	// 상품삭제
+	public boolean removeGoods(int goodsNo) {
+		
+		Connection conn = null;
+		dbUtil = new DBUtil();
+		
+		try {
+			conn = dbUtil.getConnection();
+			conn.setAutoCommit(false); // 자동 커밋을 막는다.
+			
+			goodsImgDao = new GoodsImgDao(); // goods_no 외래키(NO ACTION)로 인해서 이미지 데이터 먼저 삭제
+			if (goodsImgDao.deleteGoodsImg(conn, goodsNo) != 1) { // 이미지가 삭제 실패시
+				throw new Exception(); // 강제로 예외를 만든다.
+			}
+			
+			goodsDao = new GoodsDao();
+			if (goodsDao.deleteGoods(conn, goodsNo) != 1) { // 상품이 삭제 실패시
+				throw new Exception(); // 강제로 예외를 만든다.
+			}
+			
+			conn.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			return false; // 삭제 실패시 false 리턴
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return true; // 삭제 성공시 true 리턴
+	}
+	
 	// 상품등록
 	public int addGoods(Goods paramGoods, GoodsImg paramGoodsImg) {
 		
@@ -32,14 +157,25 @@ public class GoodsService {
 			goodsDao = new GoodsDao();
 			
 			goodsNo = goodsDao.insertGoods(conn, paramGoods);
-			if (goodsNo != 0) {
-				paramGoodsImg.setGoodsNo(goodsNo);
-				goodsImgDao = new GoodsImgDao();
-				if (goodsImgDao.insertGoodsImg(conn, paramGoodsImg) == 0) {
-					goodsNo = 0;
-					throw new Exception(); // 이미지 입력 실패시 강제로 롤백(catch절 이동)
-				}
+			if (goodsNo == 0) {
+				throw new Exception(); // 이미지 입력 실패시 강제로 롤백(catch절 이동)
 			}
+			
+			paramGoodsImg.setGoodsNo(goodsNo);
+			goodsImgDao = new GoodsImgDao();
+			if (goodsImgDao.insertGoodsImg(conn, paramGoodsImg) != 1) {
+				goodsNo = 0;
+				throw new Exception(); // 이미지 입력 실패시 강제로 롤백(catch절 이동)
+			}
+			
+//			if (goodsNo != 0) {
+//				paramGoodsImg.setGoodsNo(goodsNo);
+//				goodsImgDao = new GoodsImgDao();
+//				if (goodsImgDao.insertGoodsImg(conn, paramGoodsImg) == 0) {
+//					goodsNo = 0;
+//					throw new Exception(); // 이미지 입력 실패시 강제로 롤백(catch절 이동)
+//				}
+//			}
 			
 			conn.commit();
 		} catch (Exception e) {
