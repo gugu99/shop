@@ -47,8 +47,6 @@
 						<form action="<%=request.getContextPath()%>/admin/addGoodsAction.jsp" method="post" enctype="multipart/form-data">
 							<label for="imgFile">imgFile</label>
 							<input type="file" name="imgFile" id="imgFile" />
-							<label for="filename">FILE NAME</label>
-							<input type="text" name="filename" id="filename" />
 							<label for="goodsName">GOODS NAME</label>
 							<input type="text" name="goodsName" id="goodsName" placeholder="Enter goodsName" />
 							<label for="goodsPrice">GOODS PRICE</label>

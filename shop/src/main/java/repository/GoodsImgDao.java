@@ -13,7 +13,7 @@ public class GoodsImgDao {
 		System.out.println("\n--------------------GoodsImgDao.insertGoodsImg()");
 		
 		int result = 0;
-		String sql = "INSERT INTO goods_img (goods_no,filename, origin_filename, content_type,system_filename, create_date) VALUES (?,?,?,?,?,NOW())";
+		String sql = "INSERT INTO goods_img (goods_no,filename, origin_filename, content_type, create_date) VALUES (?,?,?,?,NOW())";
 		PreparedStatement stmt = null;
 		
 		try {
@@ -22,7 +22,6 @@ public class GoodsImgDao {
 			stmt.setString(2, paramGoodsImg.getFilename());
 			stmt.setString(3, paramGoodsImg.getOriginFilename());
 			stmt.setString(4, paramGoodsImg.getContentType());
-			stmt.setString(5, paramGoodsImg.getSystemFilename());
 			
 			System.out.println("stmt --- " + stmt); // 디버깅
 			

@@ -19,22 +19,24 @@ public class GoodsService {
 	private GoodsImgDao goodsImgDao;
 	
 	// 상품등록
-	public boolean addGoods(Goods paramGoods, GoodsImg paramGoodsImg) {
+	public int addGoods(Goods paramGoods, GoodsImg paramGoodsImg) {
 		
 		Connection conn = null;
 		dbUtil = new DBUtil();
+		int goodsNo = 0;
 		
 		try {
 			conn = dbUtil.getConnection();
 			conn.setAutoCommit(false);
 			
 			goodsDao = new GoodsDao();
-			goodsImgDao = new GoodsImgDao();
 			
-			int goodsNo = goodsDao.insertGoods(conn, paramGoods);
+			goodsNo = goodsDao.insertGoods(conn, paramGoods);
 			if (goodsNo != 0) {
 				paramGoodsImg.setGoodsNo(goodsNo);
+				goodsImgDao = new GoodsImgDao();
 				if (goodsImgDao.insertGoodsImg(conn, paramGoodsImg) == 0) {
+					goodsNo = 0;
 					throw new Exception(); // 이미지 입력 실패시 강제로 롤백(catch절 이동)
 				}
 			}
@@ -48,7 +50,6 @@ public class GoodsService {
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
-			return false;
 		} finally {
 			if (conn != null) {
 				try {
@@ -59,7 +60,7 @@ public class GoodsService {
 			}
 		}
 		
-		return true;
+		return goodsNo;
 	}
 	
 	// goods 상세보기 페이지

@@ -54,7 +54,7 @@ public class GoodsDao {
 		System.out.println("\n--------------------GoodsDao.selectGoodsAndImgOne()");
 		
 		Map<String, Object> map = null;
-		String sql = "SELECT g.goods_no goodsNO, g.goods_name goodsName, g.goods_price goodsPrice, g.update_date gUpdateDate, g.create_date gCreateDate, g.sold_out soldOut, gi.filename filename, gi.origin_filename originFilename, gi.content_type contentType, gi.system_filename systemFilename , gi.create_date giCreateDate FROM goods g INNER JOIN goods_img gi ON g.goods_no = gi.goods_no WHERE g.goods_no = ?";
+		String sql = "SELECT g.goods_no goodsNO, g.goods_name goodsName, g.goods_price goodsPrice, g.update_date gUpdateDate, g.create_date gCreateDate, g.sold_out soldOut, gi.filename filename, gi.origin_filename originFilename, gi.content_type contentType, gi.create_date giCreateDate FROM goods g INNER JOIN goods_img gi ON g.goods_no = gi.goods_no WHERE g.goods_no = ?";
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		/*
@@ -65,7 +65,6 @@ public class GoodsDao {
 		 
 		 쿼리에서 where조건이 없다면 .. 반환타입 List<Map<String,Object>> list
 		 */
-		
 		try {
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, goodsNo);
@@ -87,7 +86,6 @@ public class GoodsDao {
 				map.put("filename", rs.getString("filename"));
 				map.put("originFilename", rs.getString("originFilename"));
 				map.put("contentType", rs.getString("contentType"));
-				map.put("systemFilename", rs.getString("systemFilename"));
 				map.put("goodsImgCreateDate", rs.getString("giCreateDate"));
 			
 			}

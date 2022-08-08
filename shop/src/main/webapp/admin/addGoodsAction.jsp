@@ -16,11 +16,9 @@
 	int max = 10 * 1024 * 1024;
 	MultipartRequest mRequest = new MultipartRequest(request, dir, max, "utf-8", new DefaultFileRenamePolicy());
 	// 파라미터 goods_img
-	String filename = mRequest.getParameter("filename");
-	
 	String originFilename = mRequest.getOriginalFileName("imgFile");
 	String contentType = mRequest.getContentType("imgFile");
-	String systemFilename = mRequest.getFilesystemName("imgFile");
+	String filename = mRequest.getFilesystemName("imgFile");
 	
 	// 파라미터 goods
 	String goodsName = mRequest.getParameter("goodsName");
@@ -29,7 +27,7 @@
 	
 	if(!(contentType.equals("image/gif") || contentType.equals("image/png") || contentType.equals("image/jpeg"))){
 		// 이미지가 아닌 파일 삭제
-		File f = new File(dir + "/" + systemFilename);
+		File f = new File(dir + "/" + filename);
 		
 		if(f.exists()){
 			f.delete(); // return boolean
@@ -47,7 +45,6 @@
 	System.out.println("filename --- " + filename);
 	System.out.println("originFilename --- " + originFilename);
 	System.out.println("contentType --- " + contentType);
-	System.out.println("systemFilename --- " + systemFilename);
 	
 	// goods
 	Goods goods = new Goods();
@@ -60,16 +57,15 @@
 	goodsImg.setFilename(filename);
 	goodsImg.setOriginFilename(originFilename);
 	goodsImg.setContentType(contentType);
-	goodsImg.setSystemFilename(systemFilename);
 	
 	GoodsService goodsService = new GoodsService();
 	
-	boolean add = goodsService.addGoods(goods, goodsImg);
+	int goodsNo = goodsService.addGoods(goods, goodsImg);
 	
-	if (!add) {
+	if (goodsNo == 0) {
 		System.out.println("상품 등록 실패!");
 		
-		File f = new File(dir + "/" + systemFilename);
+		File f = new File(dir + "/" + filename);
 		
 		if(f.exists()){ // 상품 등록 실패시 이미지 업로드 됐으면 삭제
 			f.delete(); // return boolean
@@ -79,5 +75,5 @@
 	}
 	
 	System.out.println("상품 등록 성공!");
-	response.sendRedirect(request.getContextPath()+"/admin/adminGoodsList.jsp");
+	response.sendRedirect(request.getContextPath()+"/admin/goodsAndImgOne.jsp?goodsNo=" + goodsNo);
 %>
