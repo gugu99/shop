@@ -1,9 +1,11 @@
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-	if (session.getAttribute("user") == null) { // 로그인 상태가 아닐 경우 loginForm.jsp로 이동
+	if (session.getAttribute("user") == null || !((String)session.getAttribute("user")).equals("employee")) { // 로그인상태가 아닌경우 loginForm.jsp로 이동 -> 로그인상태지만 사원이 아닌경우 index.jsp로 이동
 		response.sendRedirect(request.getContextPath()+"/loginForm.jsp");
 		return;
-	}	
+	}
+	
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -30,12 +32,39 @@
 	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head><!--/head-->
-
 <body>
-	
+
 	<%@include file="/header.jsp" %><!-- header -->
 	
 	<%@include file="/admin/adminMenu.jsp" %><!-- button menu -->
+	
+	<section id="form">
+		<div class="container">
+			<div class="row">
+			<div class="col-sm-4 col-sm-offset-4">
+					<div class="login-form">
+						<h2>상품 등록</h2>
+						<form action="<%=request.getContextPath()%>/admin/addGoodsAction.jsp" method="post" enctype="multipart/form-data">
+							<label for="imgFile">imgFile</label>
+							<input type="file" name="imgFile" id="imgFile" />
+							<label for="filename">FILE NAME</label>
+							<input type="text" name="filename" id="filename" />
+							<label for="goodsName">GOODS NAME</label>
+							<input type="text" name="goodsName" id="goodsName" placeholder="Enter goodsName" />
+							<label for="goodsPrice">GOODS PRICE</label>
+							<input type="text" name="goodsPrice" id="goodsPrice" placeholder="Enter goodsPrice" />
+							<label for="soldOut">SOLD OUT</label>
+							<input type="radio" name="soldOut" value="Y"  id="Y"/>
+							<label for="Y">Y</label>
+							<input type="radio" name="soldOut" value="N"  id="N" checked/>
+							<label for="N">N</label>
+							<button type="submit">상품 등록</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 	
 	<%@include file="/footer.jsp" %><!-- footer -->
 	

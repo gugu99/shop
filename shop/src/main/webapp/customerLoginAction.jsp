@@ -32,6 +32,6 @@
 		session.setAttribute("name", loginCustomer.getCustomerName());
 		response.sendRedirect(request.getContextPath()+"/index.jsp");
 	} else {
-		response.sendRedirect(request.getContextPath()+"/loginForm.jsp?errorMsg=Invalid ID or PW");
+		response.sendRedirect(request.getContextPath()+"/loginForm.jsp?cErrorMsg=Invalid ID or PW");
 	}
 %>

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import repository.SignDao;
+import util.DBUtil;
 
 public class SignService {
 
@@ -16,8 +17,8 @@ public class SignService {
 	public boolean idCheck(String id) {
 	
 		boolean result = false;
-		this.signDao = new SignDao(); // this 생략 가능
-		this.dbUtil = new DBUtil();
+		signDao = new SignDao(); // this 생략 가능
+		dbUtil = new DBUtil();
 		Connection conn = null;
 		
 		try {

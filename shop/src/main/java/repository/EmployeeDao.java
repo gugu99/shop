@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.naming.spi.DirStateFactory.Result;
 
-import service.DBUtil;
+import util.DBUtil;
 import vo.Employee;
 
 public class EmployeeDao {
@@ -39,8 +39,8 @@ public class EmployeeDao {
 		return result;
 	}
 	
-	// 직원 리스트 lastPage 구하기
-	public int selectEmployeeCount(Connection conn,int rowPerPage) throws SQLException {
+	// 직원 리스트 count(*) 구하기
+	public int selectEmployeeCount(Connection conn) throws SQLException {
 		System.out.println("\n--------------------Employee.selectEmployeeCount()");
 		
 		int cnt = 0;

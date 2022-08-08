@@ -1,9 +1,23 @@
+<%@page import="java.util.Set"%>
+<%@page import="java.util.Map"%>
+<%@page import="java.text.DecimalFormat"%>
+<%@page import="vo.Goods"%>
+<%@page import="service.GoodsService"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-	if (session.getAttribute("user") == null) { // 로그인 상태가 아닐 경우 loginForm.jsp로 이동
+	if (session.getAttribute("user") == null || !((String)session.getAttribute("user")).equals("employee")) { // 로그인상태가 아닌경우 loginForm.jsp로 이동 -> 로그인상태지만 사원이 아닌경우 index.jsp로 이동
 		response.sendRedirect(request.getContextPath()+"/loginForm.jsp");
 		return;
-	}	
+	}
+	
+	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
+
+	Map<String, Object> goodsMap = null;
+	GoodsService goodsService = new GoodsService();
+	
+	goodsMap = goodsService.getGoodsAndImgOne(goodsNo);
+	
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -36,6 +50,31 @@
 	<%@include file="/header.jsp" %><!-- header -->
 	
 	<%@include file="/admin/adminMenu.jsp" %><!-- button menu -->
+	<section id="form"><!--form-->
+		<h2 class="text-center">상품 상세보기</h2>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-5 col-sm-offset-1">
+		            <img width="450" height="427" alt="상품이미지" src="<%=request.getContextPath() %>/upload/<%=goodsMap.get("systemFilename")%>">
+				</div>
+				<div class="col-sm-6">
+					<table class="table table-striped custab">
+						<%
+							for (String key : goodsMap.keySet()) {
+								Object s = goodsMap.get(key);
+						%>
+					        <tr>
+					            <th><%=key %></th>
+					            <td><%=s %></td>
+					        </tr>
+					     <%
+							}
+					     %>
+				    </table>
+				</div>
+			</div>
+		</div>
+	</section>
 	
 	<%@include file="/footer.jsp" %><!-- footer -->
 	

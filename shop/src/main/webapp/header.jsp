@@ -33,7 +33,7 @@
 				<div class="row">
 					<div class="col-sm-4">
 						<div class="logo pull-left">
-							<a href="index.jsp"><img src="images/logo.png" alt="로고이미지" /></a>
+							<a href="<%=request.getContextPath()%>/index.jsp"><img src="<%=request.getContextPath()%>/images/logo.png" alt="로고이미지" /></a>
 						</div>
 						<div class="btn-group pull-right">
 						</div>
@@ -79,14 +79,14 @@
 						</div>
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
-								<li><a href="index.jsp">Home</a></li>
+								<li><a href="<%=request.getContextPath()%>/index.jsp">Home</a></li>
 								<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
                                         <li><a href="shop.html">Products</a></li>
 										<li><a href="product-details.html">Product Details</a></li> 
 										<li><a href="checkout.html">Checkout</a></li> 
 										<li><a href="cart.html">Cart</a></li> 
-										<li><a href="loginForm.jsp" >Login</a></li> 
+										<li><a href="<%=request.getContextPath()%>/loginForm.jsp" >Login</a></li> 
                                     </ul>
                                 </li> 
 								<li class="dropdown"><a href="#">Blog<i class="fa fa-angle-down"></i></a>
@@ -96,7 +96,13 @@
                                     </ul>
                                 </li> 
 								<li><a href="404.html">404</a></li>
-								<li><a href="adminIndex.jsp">Admin</a></li>
+								<%
+									if (session.getAttribute("user") != null && ((String)session.getAttribute("user")).equals("employee")) {
+								%>
+									<li><a href="<%=request.getContextPath() %>/admin/adminIndex.jsp">Admin</a></li>
+								<%
+									}
+								%>
 							</ul>
 						</div>
 					</div>

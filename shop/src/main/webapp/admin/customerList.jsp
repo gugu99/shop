@@ -1,12 +1,12 @@
-<%@page import="vo.Employee"%>
+<%@page import="service.CustomerService"%>
+<%@page import="vo.Customer"%>
 <%@page import="java.util.List"%>
-<%@page import="service.EmployeeService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 	if (session.getAttribute("user") == null || !((String)session.getAttribute("user")).equals("employee")) { // 로그인상태가 아닌경우 loginForm.jsp로 이동 -> 로그인상태지만 사원이 아닌경우 index.jsp로 이동
 		response.sendRedirect(request.getContextPath()+"/loginForm.jsp");
 		return;
-	}	
+	}
 
 	// 페이징
 	int currentPage = 1; // 기본값 1
@@ -16,8 +16,8 @@
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
 	}
 	
-	EmployeeService employeeService = new EmployeeService();
-	List<Employee> employeeList = employeeService.getEmployeeList(rowPerPage, currentPage);
+	CustomerService customerService = new CustomerService();
+	List<Customer> customerList = customerService.getCustomerList(rowPerPage, currentPage);
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -51,7 +51,7 @@
 	
 	<%@include file="/admin/adminMenu.jsp" %><!-- button menu -->
 	
-	<!-- employeeList -->
+	<!-- customerList -->
 	<div class="container">
 	    <div class="row col-md-10 col-md-offset-1 custyle">
 	    <table class="table table-striped custab">
@@ -59,44 +59,22 @@
 	        <tr>
 	            <th>ID</th>
 	            <th>NAME</th>
+	            <th>ADDRESS</th>
+	            <th>PHONE</th>
 	            <th>CREATE_DATE</th>
 	            <th>UPDATE_DATE</th>
-	            <th class="text-center">ACTIVE</th>
 	        </tr>
 	    </thead>
 	    	<%
-	    		for (Employee e : employeeList) {
+	    		for (Customer c : customerList) {
 	    	%>
 	            <tr>
-	                <td><%=e.getEmployeeId() %></td>
-	                <td><%=e.getEmployeeName() %></td>
-	                <td><%=e.getCreateDate() %></td>
-	                <td><%=e.getUpdateDate() %></td>
-	                <td class="text-center">
-	                	<form action="<%=request.getContextPath() %>/admin/modifyEmployeeActiveAction.jsp" method="post">
-	                		<input type="hidden" name="employeeId" value="<%=e.getEmployeeId() %>" />
-	                		<input type="hidden" name="employeeActive" value="<%=e.getActive() %>" />
-	                		<%
-	                			if(e.getActive().equals("N")) {
-	                		%>
-	                			<input type="radio" name="active" value="Y"  id="Y"   />
-								<label for="Y">Y</label>
-								<input type="radio" name="active" value="N"  id="N"  checked/>
-								<label for="N">N</label>
-	                		<%
-	                			} else {
-	                		%>
-	                			<input type="radio" name="active" value="Y"  id="Y"  checked />
-								<label for="Y">Y</label>
-								<input type="radio" name="active" value="N"  id="N" />
-								<label for="N">N</label>
-	                		<%
-	                			}
-	                		%>
-	                		
-						    <button type="submit" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-edit"></span> Edit</button>
-						</form>
-	                </td>
+	                <td><%=c.getCustomerId() %></td>
+	                <td><%=c.getCustomerName() %></td>
+	                <td><%=c.getCustomerAddress() %></td>
+	                <td><%=c.getCustomerTelephone() %></td>
+	                <td><%=c.getCreateDate() %></td>
+	                <td><%=c.getUpdateDate() %></td>
 	            </tr>
 	           <%
 	    		}
@@ -105,7 +83,7 @@
 	    
 	    <!-- 페이징 -->
 		   <%
-		   		int lastPage = employeeService.getEmployeeLastPage(rowPerPage);
+		   		int lastPage = customerService.getCustomerListLastPage(rowPerPage);
 		   		
 		   %>
 		   <div class="text-center">
@@ -116,20 +94,20 @@
 					end = (end < lastPage) ? end : lastPage; // lastPage 이상이 되면 end페이지 번호가 lastPage
 					if (currentPage != 1) {
 				%>
-					<li class="page-item"><a class="page-link purple-moon" href="<%=request.getContextPath() %>/admin/employeeList.jsp?currentPage=<%=1%>"><<</a></li>
-					<li class="page-item"><a class="page-link purple-moon" href="<%=request.getContextPath() %>/admin/employeeList.jsp?currentPage=<%=currentPage-1%>">Previous</a></li>
+					<li class="page-item"><a class="page-link pink-moon" href="<%=request.getContextPath() %>/admin/customerList.jsp?currentPage=<%=1%>"><<</a></li>
+					<li class="page-item"><a class="page-link pink-moon" href="<%=request.getContextPath() %>/admin/customerList.jsp?currentPage=<%=currentPage-1%>">Previous</a></li>
 				<%		
 					}
 					for (int i = start; i <= end; i++){
 				%>	
-					<li class="page-item"><a class="page-link purple-moon" href="<%=request.getContextPath() %>/admin/employeeList.jsp?currentPage=<%=i%>"><%=i %></a></li>
+					<li class="page-item"><a class="page-link pink-moon" href="<%=request.getContextPath() %>/admin/customerList.jsp?currentPage=<%=i%>"><%=i %></a></li>
 				<%
 						
 					}
 					if (currentPage != lastPage) {
 				%>
-					<li class="page-item"><a class="page-link purple-moon" href="<%=request.getContextPath() %>/admin/employeeList.jsp?currentPage=<%=currentPage+1%>">Next</a></li>
-					<li class="page-item"><a class="page-link purple-moon" href="<%=request.getContextPath() %>/admin/employeeList.jsp?currentPage=<%=lastPage%>">>></a></li>
+					<li class="page-item"><a class="page-link pink-moon" href="<%=request.getContextPath() %>/admin/customerList.jsp?currentPage=<%=currentPage+1%>">Next</a></li>
+					<li class="page-item"><a class="page-link pink-moon" href="<%=request.getContextPath() %>/admin/customerList.jsp?currentPage=<%=lastPage%>">>></a></li>
 				<%
 					}
 				%>

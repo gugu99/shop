@@ -1,23 +1,26 @@
-<%@page import="vo.Employee"%>
+<%@page import="java.text.DecimalFormat"%>
+<%@page import="vo.Goods"%>
+<%@page import="service.GoodsService"%>
 <%@page import="java.util.List"%>
-<%@page import="service.EmployeeService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 	if (session.getAttribute("user") == null || !((String)session.getAttribute("user")).equals("employee")) { // 로그인상태가 아닌경우 loginForm.jsp로 이동 -> 로그인상태지만 사원이 아닌경우 index.jsp로 이동
 		response.sendRedirect(request.getContextPath()+"/loginForm.jsp");
 		return;
-	}	
+	}
 
 	// 페이징
 	int currentPage = 1; // 기본값 1
 	int rowPerPage = 10; // 리스트 10개씩 조회
 	
+	DecimalFormat df = new DecimalFormat("###,###"); // 가격 천단위에 ,넣기
+	
 	if (request.getParameter("currentPage") != null) {
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
 	}
 	
-	EmployeeService employeeService = new EmployeeService();
-	List<Employee> employeeList = employeeService.getEmployeeList(rowPerPage, currentPage);
+	GoodsService goodsService = new GoodsService();
+	List<Goods> goodsList = goodsService.getGoodsListByPage(rowPerPage, currentPage);
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -41,6 +44,7 @@
     <![endif]-->       
     <link rel="shortcut icon" href="<%=request.getContextPath()%>/images/favicon.ico" type="umage/x-icon" />
 	<link rel="icon" href="<%=request.getContextPath()%>/images/favicon.ico" type="umage/x-icon" />
+    <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
 	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head><!--/head-->
@@ -51,33 +55,35 @@
 	
 	<%@include file="/admin/adminMenu.jsp" %><!-- button menu -->
 	
-	<!-- employeeList -->
+	<!-- customerList -->
 	<div class="container">
 	    <div class="row col-md-10 col-md-offset-1 custyle">
 	    <table class="table table-striped custab">
 	    <thead>
 	        <tr>
-	            <th>ID</th>
+	            <th>NO</th>
 	            <th>NAME</th>
+	            <th>PRICE</th>
 	            <th>CREATE_DATE</th>
 	            <th>UPDATE_DATE</th>
-	            <th class="text-center">ACTIVE</th>
+	            <th>SOLDOUT</th>
+	            <th>상품삭제</th>
 	        </tr>
 	    </thead>
 	    	<%
-	    		for (Employee e : employeeList) {
+	    		for (Goods g : goodsList) {
 	    	%>
 	            <tr>
-	                <td><%=e.getEmployeeId() %></td>
-	                <td><%=e.getEmployeeName() %></td>
-	                <td><%=e.getCreateDate() %></td>
-	                <td><%=e.getUpdateDate() %></td>
-	                <td class="text-center">
-	                	<form action="<%=request.getContextPath() %>/admin/modifyEmployeeActiveAction.jsp" method="post">
-	                		<input type="hidden" name="employeeId" value="<%=e.getEmployeeId() %>" />
-	                		<input type="hidden" name="employeeActive" value="<%=e.getActive() %>" />
+	                <td><%=g.getGoodsNo() %></td>
+	                <td><a href="<%=request.getContextPath() %>/admin/goodsAndImgOne.jsp?goodsNo=<%=g.getGoodsNo() %>"><%=g.getGoodsName() %></a></td>
+	                <td><%=df.format(g.getGoodsPrice()) %></td>
+	                <td><%=g.getCreateDate() %></td>
+	                <td><%=g.getUpdateDate() %></td>
+	                 <td>
+	                	<form action="<%=request.getContextPath() %>/admin/modifyGoodsSoldOutAction.jsp" method="post">
+	                		<input type="hidden" name="goodsNo" value="<%=g.getGoodsNo() %>" />
 	                		<%
-	                			if(e.getActive().equals("N")) {
+	                			if(g.getSoldeOut().equals("N")) {
 	                		%>
 	                			<input type="radio" name="active" value="Y"  id="Y"   />
 								<label for="Y">Y</label>
@@ -97,15 +103,19 @@
 						    <button type="submit" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-edit"></span> Edit</button>
 						</form>
 	                </td>
+	                <td><a href="#" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Del</a></td>
 	            </tr>
 	           <%
 	    		}
 	           %>
 	    </table>
+	    <div class="text-right">
+	    	<button class="btn btn-ultra-voilet btn-rounded" onclick="location.href='<%=request.getContextPath()%>/admin/addGoodsForm.jsp'">상품등록</button>
+	    </div>
 	    
 	    <!-- 페이징 -->
 		   <%
-		   		int lastPage = employeeService.getEmployeeLastPage(rowPerPage);
+		   		int lastPage = goodsService.getGoodsListLastPage(rowPerPage);
 		   		
 		   %>
 		   <div class="text-center">
@@ -116,20 +126,20 @@
 					end = (end < lastPage) ? end : lastPage; // lastPage 이상이 되면 end페이지 번호가 lastPage
 					if (currentPage != 1) {
 				%>
-					<li class="page-item"><a class="page-link purple-moon" href="<%=request.getContextPath() %>/admin/employeeList.jsp?currentPage=<%=1%>"><<</a></li>
-					<li class="page-item"><a class="page-link purple-moon" href="<%=request.getContextPath() %>/admin/employeeList.jsp?currentPage=<%=currentPage-1%>">Previous</a></li>
+					<li class="page-item"><a class="page-link ultra-voilet" href="<%=request.getContextPath() %>/admin/adminGoodsList.jsp?currentPage=<%=1%>"><<</a></li>
+					<li class="page-item"><a class="page-link ultra-voilet" href="<%=request.getContextPath() %>/admin/adminGoodsList.jsp?currentPage=<%=currentPage-1%>">Previous</a></li>
 				<%		
 					}
 					for (int i = start; i <= end; i++){
 				%>	
-					<li class="page-item"><a class="page-link purple-moon" href="<%=request.getContextPath() %>/admin/employeeList.jsp?currentPage=<%=i%>"><%=i %></a></li>
+					<li class="page-item"><a class="page-link ultra-voilet" href="<%=request.getContextPath() %>/admin/adminGoodsList.jsp?currentPage=<%=i%>"><%=i %></a></li>
 				<%
 						
 					}
 					if (currentPage != lastPage) {
 				%>
-					<li class="page-item"><a class="page-link purple-moon" href="<%=request.getContextPath() %>/admin/employeeList.jsp?currentPage=<%=currentPage+1%>">Next</a></li>
-					<li class="page-item"><a class="page-link purple-moon" href="<%=request.getContextPath() %>/admin/employeeList.jsp?currentPage=<%=lastPage%>">>></a></li>
+					<li class="page-item"><a class="page-link ultra-voilet" href="<%=request.getContextPath() %>/admin/adminGoodsList.jsp?currentPage=<%=currentPage+1%>">Next</a></li>
+					<li class="page-item"><a class="page-link ultra-voilet" href="<%=request.getContextPath() %>/admin/adminGoodsList.jsp?currentPage=<%=lastPage%>">>></a></li>
 				<%
 					}
 				%>

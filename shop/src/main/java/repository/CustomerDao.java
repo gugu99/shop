@@ -4,15 +4,89 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import vo.Customer;
 
 
 public class CustomerDao {
 	
+	// 고객 리스트 count(*) 구하기
+	public int selectCustmoerCount(Connection conn) throws SQLException {
+		System.out.println("\n--------------------CustomerDao.selectCustmoerCount()");
+		
+		int cnt = 0;
+		String sql = "SELECT count(*) cnt FROM customer";
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			stmt = conn.prepareStatement(sql);
+			
+			System.out.println("stmt --- " + stmt); // 디버깅
+			
+			rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				cnt = rs.getInt("cnt");
+			}
+		} finally {
+			if(rs != null) {
+				rs.close();
+				}
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		
+		return cnt;
+	}
+	
+	// 고객 리스트
+	public List<Customer> selectCustomerList(Connection conn, int rowPerPage, int beginRow) throws SQLException{
+		System.out.println("\n--------------------CustomerDao.selectCustomerList()");
+		
+		List<Customer> list = new ArrayList<Customer>();
+		String sql = "SELECT customer_id customerId, customer_name customerName, customer_address customerAddress, customer_telephone customerTelephone, update_date updateDate, create_date createDate From customer LIMIT ?,?";
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, beginRow);
+			stmt.setInt(2, rowPerPage);
+			
+			System.out.println("stmt --- " + stmt); // 디버깅
+			
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				Customer customer = new Customer();
+				customer.setCustomerId(rs.getString("customerId"));
+				customer.setCustomerName(rs.getString("customerName"));
+				customer.setCustomerAddress(rs.getString("customerAddress"));
+				customer.setCustomerTelephone(rs.getString("customerTelephone"));
+				customer.setUpdateDate(rs.getString("updateDate"));
+				customer.setCreateDate(rs.getString("createDate"));
+				
+				list.add(customer);
+			}
+		} finally {
+			if(rs != null) {
+				rs.close();
+				}
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		
+		return list;
+	}
+	
 	// 회원가입
 	public int insertCustomer(Connection conn, Customer paramCustomer) throws SQLException {
-		System.out.println("\n--------------------Customer.insertCustomer()");
+		System.out.println("\n--------------------CustomerDao.insertCustomer()");
 		
 		int result = 0;
 		String sql = "INSERT INTO customer VALUES (?, PASSWORD(?), ?, ?, ?, NOW(), NOW())";
@@ -45,7 +119,7 @@ public class CustomerDao {
 	// 탈퇴
 	// CustomerService.removeCustomer(Customer customer) 호출
 	public int deleteCustomer(Connection conn, Customer paramCustomer) throws SQLException {
-		System.out.println("\n--------------------Customer.deleteCustomer()");
+		System.out.println("\n--------------------CustomerDao.deleteCustomer()");
 		// 동일한 conn
 		// conn.close() X
 		int result = 0; 
@@ -74,7 +148,7 @@ public class CustomerDao {
 	
 	// CutomerService가 호출
 	public Customer selectCustomerByIdAndPw(Connection conn ,Customer paramCustomer) throws ClassNotFoundException, SQLException {
-		System.out.println("\n--------------------Customer.selectCustomerByIdAndPw()");
+		System.out.println("\n--------------------CustomerDao.selectCustomerByIdAndPw()");
 		
 		Customer customer = null;
 		String sql = "SELECT customer_name customerName FROM customer WHERE customer_id = ? AND customer_pass = PASSWORD(?)";

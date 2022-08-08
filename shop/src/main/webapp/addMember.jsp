@@ -40,7 +40,7 @@
 	<section id="form">
 		<div class="container">
 			<div class="row">
-			<div class="col-sm-4 col-sm-offset-1">
+			<div class="col-sm-4 col-sm-offset-4">
 					<div class="login-form"><!--idCheck form-->
 						<h2>아이디 중복검사</h2>
 						<div>
@@ -66,7 +66,7 @@
 	<section id="form"><!--form-->
 		<div class="container">
 			<div class="row">
-				<div class="col-sm-4 col-sm-offset-1">
+				<div class="col-sm-4 col-sm-offset-2">
 					<div class="signup-form"><!--customerIdCheck form-->
 						<h2>고객 회원가입</h2>
 						<%

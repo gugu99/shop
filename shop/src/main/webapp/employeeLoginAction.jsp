@@ -35,8 +35,8 @@
 		session.setAttribute("user", "employee");
 		session.setAttribute("id", loginEmployee.getEmployeeId());
 		session.setAttribute("name", loginEmployee.getEmployeeName());
-		response.sendRedirect(request.getContextPath()+"/adminIndex.jsp");
+		response.sendRedirect(request.getContextPath()+"/admin/adminIndex.jsp");
 	} else {
-		response.sendRedirect(request.getContextPath()+"/loginForm.jsp?errorMsg=Invalid ID or PW");
+		response.sendRedirect(request.getContextPath()+"/loginForm.jsp?eErrorMsg=Invalid ID or PW");
 	}
 %>

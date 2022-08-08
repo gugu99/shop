@@ -26,10 +26,6 @@
     <![endif]-->       
     <link rel="shortcut icon" href="images/favicon.ico" type="umage/x-icon" />
 	<link rel="icon" href="images/favicon.ico" type="umage/x-icon" />
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head><!--/head-->
 
@@ -39,19 +35,17 @@
 	
 	<section id="form"><!--form-->
 		<div class="container">
-		<div>
-			<%
-				if (request.getParameter("errorMsg") != null) { // 에러메세지가 있으면 에러메세지 출력
-			%>
-				<span class="error-msg"><%=request.getParameter("errorMsg") %></span>
-			<%
-				}
-			%>
-		</div>
 			<div class="row">
-				<div class="col-sm-4 col-sm-offset-1">
+				<div class="col-sm-4 col-sm-offset-2">
 					<div class="login-form"><!--customerLogin form-->
 						<h2>고객 로그인</h2>
+						<%
+							if (request.getParameter("cErrorMsg") != null) { // 에러메세지가 있으면 에러메세지 출력
+						%>
+							<span class="error-msg"><%=request.getParameter("cErrorMsg") %></span>
+						<%
+							}
+						%>
 						<form action="<%=request.getContextPath() %>/customerLoginAction.jsp" method="post" id="customerForm">
 							<label for="customerId">ID</label>
 							<input type="text" name="customerId" id="customerId" placeholder="Enter Id" />
@@ -71,6 +65,13 @@
 				<div class="col-sm-4">
 					<div class="login-form"><!--employeeLogin form-->
 						<h2>직원 로그인</h2>
+						<%
+							if (request.getParameter("eErrorMsg") != null) { // 에러메세지가 있으면 에러메세지 출력
+						%>
+							<span class="error-msg"><%=request.getParameter("eErrorMsg") %></span>
+						<%
+							}
+						%>
 						<form action="<%=request.getContextPath() %>/employeeLoginAction.jsp" method="post" id="employeeForm">
 							<label for="employeeId">ID</label>
 							<input type="text" name="employeeId" id="employeeId" placeholder="Enter Id" />

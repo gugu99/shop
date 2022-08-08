@@ -6,6 +6,7 @@ import java.util.List;
 
 import repository.EmployeeDao;
 import repository.OutIdDao;
+import util.DBUtil;
 import vo.Employee;
 
 public class EmployeeService {
@@ -52,7 +53,7 @@ public class EmployeeService {
 		return true;
 	}
 	
-	// employLiss.jsp에서 호출(직원 리스트 라스트페이지 구하기)
+	// employList.jsp에서 호출(직원 리스트 라스트페이지 구하기)
 	public int getEmployeeLastPage(int rowPerPage) {
 		
 		int lastPage = 0;
@@ -63,7 +64,7 @@ public class EmployeeService {
 		try {
 			conn = dbUtil.getConnection();
 			employeeDao = new EmployeeDao();
-			totalRow = employeeDao.selectEmployeeCount(conn, rowPerPage); 
+			totalRow = employeeDao.selectEmployeeCount(conn); 
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
