@@ -100,49 +100,6 @@ public class GoodsService {
 		return true;
 	}
 	
-	// 상품삭제
-	public boolean removeGoods(int goodsNo) {
-		
-		Connection conn = null;
-		dbUtil = new DBUtil();
-		
-		try {
-			conn = dbUtil.getConnection();
-			conn.setAutoCommit(false); // 자동 커밋을 막는다.
-			
-			goodsImgDao = new GoodsImgDao(); // goods_no 외래키(NO ACTION)로 인해서 이미지 데이터 먼저 삭제
-			if (goodsImgDao.deleteGoodsImg(conn, goodsNo) != 1) { // 이미지가 삭제 실패시
-				throw new Exception(); // 강제로 예외를 만든다.
-			}
-			
-			goodsDao = new GoodsDao();
-			if (goodsDao.deleteGoods(conn, goodsNo) != 1) { // 상품이 삭제 실패시
-				throw new Exception(); // 강제로 예외를 만든다.
-			}
-			
-			conn.commit();
-		} catch (Exception e) {
-			e.printStackTrace();
-			
-			try {
-				conn.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-			return false; // 삭제 실패시 false 리턴
-		} finally {
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		
-		return true; // 삭제 성공시 true 리턴
-	}
-	
 	// 상품등록
 	public int addGoods(Goods paramGoods, GoodsImg paramGoodsImg) {
 		

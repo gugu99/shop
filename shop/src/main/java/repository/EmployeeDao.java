@@ -16,7 +16,7 @@ public class EmployeeDao {
 	
 	// 직원 권한 수정하기
 	public int updateEmployeeActive(Connection conn, Employee paramEmployee) throws SQLException {
-		System.out.println("\n--------------------Employee.updateEmployeeActive()");
+		System.out.println("\n--------------------EmployeeDao.updateEmployeeActive()");
 		
 		int result = 0;
 		String sql = "UPDATE employee SET active = ?, update_date = NOW() WHERE employee_id = ?";
@@ -41,7 +41,7 @@ public class EmployeeDao {
 	
 	// 직원 리스트 count(*) 구하기
 	public int selectEmployeeCount(Connection conn) throws SQLException {
-		System.out.println("\n--------------------Employee.selectEmployeeCount()");
+		System.out.println("\n--------------------EmployeeDao.selectEmployeeCount()");
 		
 		int cnt = 0;
 		String sql = "SELECT COUNT(*) cnt FROM employee";
@@ -72,7 +72,7 @@ public class EmployeeDao {
 	
 	// 직원 리스트
 	public List<Employee> selectEmployeeList(Connection conn, int rowPerPage, int beginRow) throws SQLException {
-		System.out.println("\n--------------------Employee.selectEmployeeList()");
+		System.out.println("\n--------------------EmployeeDao.selectEmployeeList()");
 		
 		List<Employee> list = new ArrayList<Employee>();
 		Employee employee = null;
@@ -114,7 +114,7 @@ public class EmployeeDao {
 	
 	// 회원가입
 	public int insertEmployee(Connection conn, Employee paramEmployee) throws SQLException {
-		System.out.println("\n--------------------Employee.insertEmployee()");
+		System.out.println("\n--------------------EmployeeDao.insertEmployee()");
 		
 		int result = 0;
 		String sql = "INSERT INTO employee VALUES (?,PASSWORD(?),?, NOW(), NOW(), DEFAULT)";
@@ -145,7 +145,7 @@ public class EmployeeDao {
 	// 탈퇴
 	// CustomerService.removeCustomer(Customer customer) 호출
 	public int deleteEmployee(Connection conn, Employee paramEmployee) throws SQLException {
-		System.out.println("\n--------------------Employee.deleteEmployee()");
+		System.out.println("\n--------------------EmployeeDao.deleteEmployee()");
 		// 동일한 conn
 		// conn.close() X
 		int result = 0;
@@ -173,7 +173,7 @@ public class EmployeeDao {
 
 	// CutomerService.getEmployeeByIdAndPw(Employee paramEmployee)가 호출
 	public Employee selectEmployeeByIdAndPw(Connection conn ,Employee paramEmployee) throws SQLException {
-		System.out.println("\n--------------------Employee.selectEmployeeByIdAndPw()");
+		System.out.println("\n--------------------EmployeeDao.selectEmployeeByIdAndPw()");
 		
 		Employee employee = null;
 		String sql = "SELECT employee_name employeeName, active FROM employee WHERE employee_id = ? AND employee_pass = PASSWORD(?)";

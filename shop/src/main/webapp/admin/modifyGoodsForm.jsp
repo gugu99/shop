@@ -99,6 +99,7 @@
 							</table>
 							<div class="text-right">
 								<button type="submit" class="btn btn-ultra-voilet btn-rounded">상품 수정</button>
+								<button type="button" class="btn btn-orange-moon btn-rounded" onclick="location.href='<%=request.getContextPath()%>/admin/goodsAndImgOne.jsp?goodsNo=<%=goodsNo%>'">취소</button>
 							</div>
 						</form>
 					</div>

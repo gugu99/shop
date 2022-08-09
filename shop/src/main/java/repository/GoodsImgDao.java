@@ -37,32 +37,6 @@ public class GoodsImgDao {
 		return result;
 	}
 	
-	// 이미지 삭제하기
-	public int deleteGoodsImg(Connection conn, int goodsNo) throws SQLException {
-		System.out.println("\n--------------------GoodsImgDao.deleteGoodsImg()");
-		
-		int result = 0;
-		String sql = "DELETE FROM goods_img WHERE goods_no = ?";
-		PreparedStatement stmt = null;
-		
-		try {
-			stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, goodsNo);
-			
-			System.out.println("stmt --- " + stmt); // 디버깅
-			
-			result = stmt.executeUpdate();
-			
-			System.out.println("result --- " + result); // 디버깅
-		} finally {
-			if (stmt != null) {
-				stmt.close();
-			}
-		}
-		
-		return result;
-	}
-	
 	// 이미지 등록하기
 	public int insertGoodsImg(Connection conn, GoodsImg paramGoodsImg) throws SQLException {
 		System.out.println("\n--------------------GoodsImgDao.insertGoodsImg()");

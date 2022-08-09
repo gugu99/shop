@@ -70,34 +70,6 @@ public class GoodsDao {
 		return result;
 	}
 	
-	// 상품 삭제
-	// 반화 : key 값 (jdbc api)
-	public int deleteGoods(Connection conn, int goodsNo) throws SQLException {
-		System.out.println("\n--------------------GoodsDao.deleteGoods()");
-		
-		int result = 0;
-		String sql = "DELETE FROM goods WHERE goods_no = ?";
-		PreparedStatement stmt = null;
-		
-		try {
-			stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, goodsNo);
-			
-			System.out.println("stmt --- " + stmt); // 디버깅
-			
-			result = stmt.executeUpdate();
-			
-			System.out.println("result --- " + result); // 디버깅
-			
-		} finally {
-			if (stmt != null) {
-				stmt.close();
-			}
-		}
-		
-		return result;
-	}
-	
 	// 상품 등록
 	// 반화 : key 값 (jdbc api)
 	public int insertGoods(Connection conn, Goods paramGoods) throws SQLException {

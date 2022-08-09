@@ -1,9 +1,5 @@
-<%@page import="java.util.Set"%>
-<%@page import="java.util.Map"%>
-<%@page import="java.text.DecimalFormat"%>
-<%@page import="vo.Goods"%>
-<%@page import="service.GoodsService"%>
-<%@page import="java.util.List"%>
+<%@page import="vo.Notice"%>
+<%@page import="service.NoticeService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 	if (session.getAttribute("user") == null || !((String)session.getAttribute("user")).equals("employee")) { // 로그인상태가 아닌경우 loginForm.jsp로 이동 -> 로그인상태지만 사원이 아닌경우 index.jsp로 이동
@@ -11,12 +7,11 @@
 		return;
 	}
 	
-	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
+	int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
 
-	Map<String, Object> goodsMap = null;
-	GoodsService goodsService = new GoodsService();
+	NoticeService noticeService = new NoticeService();
 	
-	goodsMap = goodsService.getGoodsAndImgOne(goodsNo);
+	Notice notice = noticeService.getNoticeOne(noticeNo);
 	
 %>
 <!DOCTYPE html>
@@ -51,31 +46,33 @@
 	
 	<%@include file="/admin/adminMenu.jsp" %><!-- button menu -->
 	<section id="form"><!--form-->
-		<h2 class="text-center">상품 상세보기</h2>
 		<div class="container">
 			<div class="row">
-				<div class="col-sm-5 col-sm-offset-1">
-		            <img width="450" height="427" alt="상품이미지" src="<%=request.getContextPath() %>/upload/<%=goodsMap.get("filename")%>">
-				</div>
-				<div class="col-sm-6">
-					<table class="table table-striped custab">
-						<%
-							for (String key : goodsMap.keySet()) {
-								Object s = goodsMap.get(key);
-						%>
-					        <tr>
-					            <th><%=key %></th>
-					            <td><%=s %></td>
-					        </tr>
-					     <%
-							}
-					     %>
+				<div class="col-md-10 col-md-offset-1">
+					<table class="table custab">
+				        <tr>
+				            <th>공지 번호 :</th>
+				            <td><%=notice.getNoticeNo() %></td>
+				            <th>작성일 :</th>
+				            <td><%=notice.getCreateDate() %></td>
+				            <th>수정일 :</th>
+				            <td><%=notice.getUpdateDate() %></td>
+				        </tr>
+				        <tr>
+				        	<th>제목 :</th>
+				            <td colspan="6"><%=notice.getNoticeTitle() %></td>
+				        </tr>
+				        <tr>
+				            <th>내용</th>
+				            <td colspan="6"><%=notice.getNoticeContent() %></td>
+				        </tr>
 				    </table>
+				    <div class="text-right">
+						<button class="btn btn-dark-blue btn-rounded" onclick="location.href='<%=request.getContextPath()%>/admin/modifyNoticeForm.jsp?noticeNo=<%=noticeNo%>'">공지수정</button>
+						<button class="btn btn-orange-moon btn-rounded" onclick="location.href='<%=request.getContextPath()%>/admin/removeNoticeAction.jsp?noticeNo=<%=noticeNo%>'">공지삭제</button>
+				    </div>
 				</div>
 			</div>
-			<div class="text-right">
-				<button class="btn btn-ultra-voilet btn-rounded" onclick="location.href='<%=request.getContextPath()%>/admin/modifyGoodsForm.jsp?goodsNo=<%=goodsNo%>'">상품수정</button>
-		    </div>
 		</div>
 	</section>
 	

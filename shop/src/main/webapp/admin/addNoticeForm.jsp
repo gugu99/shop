@@ -1,22 +1,9 @@
-<%@page import="java.util.Set"%>
-<%@page import="java.util.Map"%>
-<%@page import="java.text.DecimalFormat"%>
-<%@page import="vo.Goods"%>
-<%@page import="service.GoodsService"%>
-<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 	if (session.getAttribute("user") == null || !((String)session.getAttribute("user")).equals("employee")) { // 로그인상태가 아닌경우 loginForm.jsp로 이동 -> 로그인상태지만 사원이 아닌경우 index.jsp로 이동
 		response.sendRedirect(request.getContextPath()+"/loginForm.jsp");
 		return;
 	}
-	
-	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
-
-	Map<String, Object> goodsMap = null;
-	GoodsService goodsService = new GoodsService();
-	
-	goodsMap = goodsService.getGoodsAndImgOne(goodsNo);
 	
 %>
 <!DOCTYPE html>
@@ -51,31 +38,28 @@
 	
 	<%@include file="/admin/adminMenu.jsp" %><!-- button menu -->
 	<section id="form"><!--form-->
-		<h2 class="text-center">상품 상세보기</h2>
 		<div class="container">
 			<div class="row">
-				<div class="col-sm-5 col-sm-offset-1">
-		            <img width="450" height="427" alt="상품이미지" src="<%=request.getContextPath() %>/upload/<%=goodsMap.get("filename")%>">
-				</div>
-				<div class="col-sm-6">
-					<table class="table table-striped custab">
-						<%
-							for (String key : goodsMap.keySet()) {
-								Object s = goodsMap.get(key);
-						%>
+				<div class="col-md-10 col-md-offset-1">
+					<form action="<%=request.getContextPath()%>/admin/addNoticeAction.jsp" method="post">
+						<table class="table custab">
 					        <tr>
-					            <th><%=key %></th>
-					            <td><%=s %></td>
+					        	<th>제목 :</th>
+					            <td colspan="6"><input class="form-control" type="text" name="noticeTitle"/></td>
 					        </tr>
-					     <%
-							}
-					     %>
-				    </table>
+					        <tr>
+					            <th>내용 :</th>
+					            <td colspan="6"><textarea rows="15" class="form-control" name="noticeContent"></textarea></td>
+					        </tr>
+					    </table>
+					    <div class="text-right">
+							<button class="btn btn-dark-blue btn-rounded" type="submit">등록하기</button>
+							<button class="btn btn-light-moon btn-rounded" type="reset">취소</button>
+							<a class="btn btn-orange-moon btn-rounded" href="<%=request.getContextPath()%>/admin/adminNoticeList.jsp">목록으로</a>
+					    </div>
+					</form>
 				</div>
 			</div>
-			<div class="text-right">
-				<button class="btn btn-ultra-voilet btn-rounded" onclick="location.href='<%=request.getContextPath()%>/admin/modifyGoodsForm.jsp?goodsNo=<%=goodsNo%>'">상품수정</button>
-		    </div>
 		</div>
 	</section>
 	
