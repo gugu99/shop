@@ -52,7 +52,7 @@
 								}
 							%>
 						</div>
-						<form action="<%=request.getContextPath()%>/idCheckAction.jsp" method="post" id="idCheckForm">
+						<form>
 							<label for="ckId">ID</label>
 							<input type="text" name="ckId" id="ckId" placeholder="Enter Id" />
 							<button type="button" id="ckIdBtn" class="btn btn-default pull-right">아이디 중복검사</button>
@@ -124,9 +124,32 @@
 			$('#ckIdBtn').click(function(){
 				if($('#ckId').val() == '') {
 					alert('아이디를 입력하세요!');
-				} else {
-					idCheckForm.submit();
+					$('#ckId').focus();
+					return;
 				}
+				
+				if ($('#ckId').val().length < 4) {
+					alert('아이디를 4자이상 입력해주세요!');
+					$('#ckId').focus();
+					return;
+				}
+				
+				$.ajax({
+					url : '/shop/idckController',
+					type : 'post',
+					data : {ckId : $('#ckId').val()},
+					success : function(json) {
+						if (json == 'n') {
+							alert('이미 사용중인 아이디입니다.');
+							$('#customerId').val('');
+							$('#employeeId').val('');
+							$('#ckId').focus();
+							return;
+						}
+						$('#customerId').val($('#ckId').val());
+						$('#employeeId').val($('#ckId').val());
+					}
+				});
 			});
 		});
 		
