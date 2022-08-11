@@ -18,6 +18,14 @@ public class GoodsService {
 	private GoodsDao goodsDao;
 	private GoodsImgDao goodsImgDao;
 	
+	// 고객 상품리스트
+	public List<Map<String, Object>> getCustomerGoodsListByPage(int rowPerPage, int currentPage) {
+		
+		// customerDao 호출
+		
+		return null;
+	}
+	
 	// 상품 수정하기
 	public boolean modifyGoods(Goods paramGoods, GoodsImg paramGoodsImg) {
 		

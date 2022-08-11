@@ -14,6 +14,57 @@ import vo.Goods;
 
 public class GoodsDao {
 	
+	// 고갹 상품리스트 페이지에서 사용
+	public List<Map<String, Object>> selectCustomerGoodsListByPage(Connection conn, int rowPerPage, int beginRow) throws SQLException {
+		System.out.println("\n--------------------GoodsDao.customerGoodsListByPage()");
+		
+		List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+		// String sql = "SELECT g.goods_no goodsNo, g.goods_name goodsName, g.goods_price goodsPrice, g.sold_out soldOut FROM goods g INNER JOIN goods_img gi ON g.goods_no = gi.goods_no ORDER BY g.create_date LIMIT ?,?";
+		// 판매량이 많은 상품부터
+		String sql ="";
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		/*
+		 SELECT g.*, IFNULL(t.sumNum, 0) t.sumNum, gi.*  FROM goods g LEFT JOIN (SELECT goods_no, sum(order_quanity) sumNum FROM orders GROUP BY goods_no) t ON g.goods_no = t.goods_no INNER JOIN goods_img gi ON g.goods_no = gi.goods_no ORDER BY IFNULL(t.sumNum, 0) DESC
+		 
+		 SELECT g.*, gi.*  
+		 FROM 
+		 goods g LEFT JOIN (SELECT goods_no, sum(order_quanity) sumNum 
+		 						FROM orders GROUP BY goods_no) t 
+		 						ON g.goods_no = t.goods_no 
+		 							INNER JOIN goods_img gi 
+		 							ON g.goods_no = gi.goods_no 
+		 ORDER BY IFNULL(t.sumNum, 0) DESC
+		 */
+		
+		
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, beginRow);
+			stmt.setInt(2, rowPerPage);
+			
+			System.out.println("stmt --- " + stmt); // 디버깅
+			
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				
+				list.add(map);
+			}
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		
+		return list;
+	}
+	
 	// 상품 수정하기
 	public int updateGoods(Connection conn, Goods paramGoods) throws SQLException {
 		System.out.println("\n--------------------GoodsDao.updateGoods()");
