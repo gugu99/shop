@@ -1,11 +1,12 @@
-<%@page import="vo.Notice"%>
-<%@page import="service.NoticeService"%>
+<%@page import="java.text.DecimalFormat"%>
+<%@page import="java.util.Map"%>
+<%@page import="service.OrdersService"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-	System.out.println("\n--------------------adminNoticeList.jsp");	
+	System.out.println("\n--------------------adminOrdersList.jsp");	
 
-	if (session.getAttribute("user") == null || !((String)session.getAttribute("user")).equals("employee")) { // 로그인상태가 아닌경우 loginForm.jsp로 이동 -> 로그인상태지만 사원이 아닌경우 index.jsp로 이동
+	if (session.getAttribute("user") == null || !session.getAttribute("user").equals("employee")) { // 로그인상태가 아닌경우 loginForm.jsp로 이동 -> 로그인상태지만 사원이 아닌경우 index.jsp로 이동
 		response.sendRedirect(request.getContextPath()+"/loginForm.jsp");
 		return;
 	}
@@ -18,8 +19,11 @@
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
 	}
 	
-	NoticeService noticeService  = new NoticeService();
-	List<Notice> noticeList = noticeService.getNoticeList(rowPerPage, currentPage);
+	DecimalFormat df = new DecimalFormat("###,###"); // 가격 천단위에 ,넣기
+	
+	OrdersService ordersService = new OrdersService();
+	List<Map<String, Object>> ordersList = ordersService.getOrdersList(rowPerPage, currentPage);
+	
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -55,37 +59,52 @@
 	<%@include file="/admin/adminMenu.jsp" %><!-- button menu -->
 	
 	<!-- customerList -->
-	<div class="container">
-	    <div class="row col-md-10 col-md-offset-1 custyle">
+	<div class="container text-center">
+	    <div class="row col-md-12  custyle">
 	    <table class="table table-striped custab">
 	    <thead>
 	        <tr>
-	            <th>NO</th>
-	            <th>TITLE</th>
-	            <th>CREATE_DATE</th>
-	            <th>UPDATE_DATE</th>
+	            <th>ORDER NO</th>
+	            <th>CUSTOMER ID</th>
+	            <th>GOODS NAME</th>
+	            <th>ORDER PRICE</th>
+	            <th>ORDER QUANTITY</th>
+	            <th>CREATE DATE</th>
+	            <th>UPDATE DATE</th>
+	            <th>ORDER STATE</th>
 	        </tr>
 	    </thead>
 	    	<%
-	    		for (Notice n : noticeList) {
+	    		for (Map<String, Object> o : ordersList) {
 	    	%>
 	            <tr>
-	                <td><%=n.getNoticeNo() %></td>
-	                <td><a href="<%=request.getContextPath() %>/admin/adminNoticeOne.jsp?noticeNo=<%=n.getNoticeNo() %>"><%=n.getNoticeTitle() %></a></td>
-	                <td><%=n.getCreateDate() %></td>
-	                <td><%=n.getUpdateDate() %></td>
+	                <td><%=o.get("orderNo")%></td>
+	                <td><a href="<%=request.getContextPath() %>/admin/adminOrdersOne.jsp?customerId=<%=o.get("customerId") %>"><%=o.get("customerId") %></a></td>
+	                <td><%=o.get("goodsName") %></td>
+	                <td><%=df.format(o.get("orderPrice")) %></td>
+	                <td><%=o.get("orderQuantity") %></td>
+	                <td><%=o.get("createDate") %></td>
+	                <td><%=o.get("updateDate") %></td>
+	                <td>
+	                	<form action="<%=request.getContextPath() %>/admin/modifyOrdersStateAction.jsp" method="post">
+	                		<input type="hidden" name="goodsNo" value="<%=o.get("orderNo") %>" />
+	                		<input type="hidden" name="goodsNo" value="<%=o.get("orderState") %>" />
+	                		
+	                		
+						    <button type="submit" class="btn btn-info btn-xs">
+						    	<span class="glyphicon glyphicon-edit"></span> Edit
+						    </button>
+						</form>
+	                </td>
 	            </tr>
 	           <%
 	    		}
 	           %>
 	    </table>
-	    <div class="text-right">
-	    	<button class="btn btn-dark-blue btn-rounded" onclick="location.href='<%=request.getContextPath()%>/admin/addNoticeForm.jsp'">공지등록</button>
-	    </div>
 	    
 	    <!-- 페이징 -->
 		   <%
-		   		int lastPage = noticeService.getNoticeLastPage(rowPerPage);
+		   		int lastPage = ordersService.getOrdersListLastPage(rowPerPage);
 		   		
 		   %>
 		   <div class="text-center">
@@ -96,20 +115,20 @@
 					end = (end < lastPage) ? end : lastPage; // lastPage 이상이 되면 end페이지 번호가 lastPage
 					if (currentPage != 1) {
 				%>
-					<li class="page-item"><a class="page-link dark-blue" href="<%=request.getContextPath() %>/admin/adminNoticeList.jsp?currentPage=<%=1%>"><<</a></li>
-					<li class="page-item"><a class="page-link dark-blue" href="<%=request.getContextPath() %>/admin/adminNoticeList.jsp?currentPage=<%=currentPage-1%>">Previous</a></li>
+					<li class="page-item"><a class="page-link cool-blues" href="<%=request.getContextPath() %>/admin/adminOrdersList.jsp?currentPage=<%=1%>"><<</a></li>
+					<li class="page-item"><a class="page-link cool-blues" href="<%=request.getContextPath() %>/admin/adminOrdersList.jsp?currentPage=<%=currentPage-1%>">Previous</a></li>
 				<%		
 					}
 					for (int i = start; i <= end; i++){
 				%>	
-					<li class="page-item"><a class="page-link dark-blue" href="<%=request.getContextPath() %>/admin/adminNoticeList.jsp?currentPage=<%=i%>"><%=i %></a></li>
+					<li class="page-item"><a class="page-link cool-blues" href="<%=request.getContextPath() %>/admin/adminOrdersList.jsp?currentPage=<%=i%>"><%=i %></a></li>
 				<%
 						
 					}
 					if (currentPage != lastPage) {
 				%>
-					<li class="page-item"><a class="page-link dark-blue" href="<%=request.getContextPath() %>/admin/adminNoticeList.jsp?currentPage=<%=currentPage+1%>">Next</a></li>
-					<li class="page-item"><a class="page-link dark-blue" href="<%=request.getContextPath() %>/admin/adminNoticeList.jsp?currentPage=<%=lastPage%>">>></a></li>
+					<li class="page-item"><a class="page-link cool-blues" href="<%=request.getContextPath() %>/admin/adminOrdersList.jsp?currentPage=<%=currentPage+1%>">Next</a></li>
+					<li class="page-item"><a class="page-link cool-blues" href="<%=request.getContextPath() %>/admin/adminOrdersList.jsp?currentPage=<%=lastPage%>">>></a></li>
 				<%
 					}
 				%>

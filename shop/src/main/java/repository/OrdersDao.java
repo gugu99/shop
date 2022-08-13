@@ -14,7 +14,7 @@ import vo.Orders;
 public class OrdersDao {
 	
 	// 주문 상태값 수정
-	public int updateOrderState(Connection conn, Orders paramOrders) throws SQLException {
+	public int updateOrdersState(Connection conn, Orders paramOrders) throws SQLException {
 		
 		int result = 0;
 		String sql = "UPDATE orders SET order_state = ? WHERE order_no = ?";
@@ -122,7 +122,7 @@ public class OrdersDao {
 		
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>(); // 다형성
 		String sql = "SELECT o.order_no orderNo, o.customer_id customerId, o.order_price orderPrice, o.order_quantity orderQuantity, o.order_state orderState, o.create_date createDate, o.update_date updateDate, g.goods_name goodsName "
-					+"FROM orders o INNER JOIN goods g ON o.order_no = g.goods_no ORDER BY create_date DESC LIMIT ?,?";
+					+"FROM orders o INNER JOIN goods g ON o.order_no = g.goods_no ORDER BY o.create_date DESC LIMIT ?,?";
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
@@ -166,7 +166,7 @@ public class OrdersDao {
 		
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>(); // 다형성
 		String sql = "SELECT o.order_no orderNo, o.customer_id customerId, o.order_price orderPrice, o.order_quantity orderQuantity, o.order_state orderState, o.create_date createDate, o.update_date updateDate, g.goods_name goodsName "
-				+ "FROM orders o INNER JOIN goods g ON o.order_no = g.goods_no WHERE o.customer_id = ? ORDER BY create_date DESC LIMIT ?,?";
+				+ "FROM orders o INNER JOIN goods g ON o.order_no = g.goods_no WHERE o.customer_id = ? ORDER BY o.create_date DESC LIMIT ?,?";
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
