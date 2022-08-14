@@ -20,6 +20,7 @@ Model1 쇼핑몰
 ### 4. 상품관리 - [GoodsService](https://github.com/gugu99/shop/blob/master/shop/src/main/java/service/GoodsService.java) / [GoodsDao](https://github.com/gugu99/shop/blob/master/shop/src/main/java/repository/GoodsDao.java) / [GoodsImgDao](https://github.com/gugu99/shop/blob/master/shop/src/main/java/repository/GoodsImgDao.java)
   - 상품 목록
     - adminGoodsList
+    - adminCustomerOrders(특정 고객의 주문 목록)
   - 상품 상세
     - goodsAndImgOne
     - (+review)
@@ -33,6 +34,7 @@ Model1 쇼핑몰
   - 주문 목록
     - adminOrdersList
   - 주문 상세
+    - adminOrdersOne
   - 주문 상태 변경
-
+    - modifyOrderStateAction
 ## CUSTOMER
