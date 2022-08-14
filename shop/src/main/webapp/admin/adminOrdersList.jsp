@@ -59,8 +59,8 @@
 	<%@include file="/admin/adminMenu.jsp" %><!-- button menu -->
 	
 	<!-- customerList -->
-	<div class="container text-center">
-	    <div class="row col-md-12  custyle">
+	<div class="container">
+	    <div class="row   custyle">
 	    <table class="table table-striped custab">
 	    <thead>
 	        <tr>
@@ -78,8 +78,8 @@
 	    		for (Map<String, Object> o : ordersList) {
 	    	%>
 	            <tr>
-	                <td><%=o.get("orderNo")%></td>
-	                <td><a href="<%=request.getContextPath() %>/admin/adminOrdersOne.jsp?customerId=<%=o.get("customerId") %>"><%=o.get("customerId") %></a></td>
+	                <td><a href="<%=request.getContextPath() %>/admin/adminOrdersOne.jsp?orderNo=<%=o.get("orderNo") %>"><%=o.get("orderNo")%></a></td>
+	                <td><a href="<%=request.getContextPath() %>/admin/adminCustomerOrders.jsp?customerId=<%=o.get("customerId") %>"><%=o.get("customerId") %></a></td>
 	                <td><%=o.get("goodsName") %></td>
 	                <td><%=df.format(o.get("orderPrice")) %></td>
 	                <td><%=o.get("orderQuantity") %></td>
@@ -87,10 +87,18 @@
 	                <td><%=o.get("updateDate") %></td>
 	                <td>
 	                	<form action="<%=request.getContextPath() %>/admin/modifyOrdersStateAction.jsp" method="post">
-	                		<input type="hidden" name="goodsNo" value="<%=o.get("orderNo") %>" />
-	                		<input type="hidden" name="goodsNo" value="<%=o.get("orderState") %>" />
-	                		
-	                		
+	                		<input type="hidden" name="orderNo" value="<%=o.get("orderNo") %>" />
+	                		<input type="hidden" name="preOrderState" value="<%=o.get("orderState") %>" />
+	                		<select name="orderState">
+	                			<option value="default"><%=o.get("orderState") %></option>
+	                			<option value="주문취소">주문취소</option>
+	                			<option value="결제왼료">결제왼료</option>
+								<option value="배송시작">배송시작</option>
+								<option value="배송중">배송중</option>
+								<option value="배송완료">배송완료</option>
+								<option value="구매확정">구매확정</option>
+								<option value="환불">환불</option>
+	                		</select>
 						    <button type="submit" class="btn btn-info btn-xs">
 						    	<span class="glyphicon glyphicon-edit"></span> Edit
 						    </button>

@@ -43,9 +43,9 @@ public class OrdersDao {
 		System.out.println("\n--------------------OrdersDao.selectOrdersOne()");
 		
 		Map<String, Object> map = null;
-		String sql = "SELECT o.order_no orderNo, o.goods_no goodsNo, o.customer_id customerId, o.order_price orderPrice, o.order_quantity orderQuantity, o.order_state orderState, o.order_addr orderAddr, o.create_date createDate, o.update_date updateDate "
+		String sql = "SELECT o.order_no orderNo, o.goods_no goodsNo, o.customer_id customerId, o.order_price orderPrice, o.order_quantity orderQuantity, o.order_state orderState, o.order_addr orderAddr, o.create_date createDate, o.update_date updateDate, "
 					+"g.goods_name goodsName, c.customer_name customerName, c.customer_telephone customerTelephone "
-					+"FROM orders o INNER JOIN goods g ON o.goods_no = g.goods_no INNER JOIN o.customer_id = c.customer_id WHERE o.order_no = ?";
+					+"FROM orders o INNER JOIN goods g ON o.goods_no = g.goods_no INNER JOIN customer c ON o.customer_id = c.customer_id WHERE o.order_no = ?";
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
