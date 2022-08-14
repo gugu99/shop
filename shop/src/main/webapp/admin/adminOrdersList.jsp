@@ -86,7 +86,7 @@
 	                <td><%=o.get("createDate") %></td>
 	                <td><%=o.get("updateDate") %></td>
 	                <td>
-	                	<form action="<%=request.getContextPath() %>/admin/modifyOrdersStateAction.jsp" method="post">
+	                	<form action="<%=request.getContextPath() %>/admin/modifyOrderStateAction.jsp" method="post">
 	                		<input type="hidden" name="orderNo" value="<%=o.get("orderNo") %>" />
 	                		<input type="hidden" name="preOrderState" value="<%=o.get("orderState") %>" />
 	                		<select name="orderState">
