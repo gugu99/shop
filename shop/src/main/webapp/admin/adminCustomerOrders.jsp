@@ -1,8 +1,11 @@
-<%@page import="service.CustomerService"%>
-<%@page import="vo.Customer"%>
+<%@page import="java.text.DecimalFormat"%>
+<%@page import="java.util.Map"%>
+<%@page import="service.OrdersService"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
+	System.out.println("\n--------------------adminCustomerOrders.jsp");	
+
 	if (session.getAttribute("user") == null || !session.getAttribute("user").equals("employee")) { // 로그인상태가 아닌경우 loginForm.jsp로 이동 -> 로그인상태지만 사원이 아닌경우 index.jsp로 이동
 		response.sendRedirect(request.getContextPath()+"/loginForm.jsp");
 		return;
@@ -16,8 +19,14 @@
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
 	}
 	
-	CustomerService customerService = new CustomerService();
-	List<Customer> customerList = customerService.getCustomerList(rowPerPage, currentPage);
+	// 파라미터
+	String customerId = request.getParameter("customerId");
+	
+	DecimalFormat df = new DecimalFormat("###,###"); // 가격 천단위에 ,넣기
+	
+	OrdersService ordersService = new OrdersService();
+	List<Map<String, Object>> ordersList = ordersService.getOrdersListByCustomer(customerId, rowPerPage, currentPage);
+	
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -41,6 +50,7 @@
     <![endif]-->       
     <link rel="shortcut icon" href="<%=request.getContextPath()%>/images/favicon.ico" type="umage/x-icon" />
 	<link rel="icon" href="<%=request.getContextPath()%>/images/favicon.ico" type="umage/x-icon" />
+    <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
 	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head><!--/head-->
@@ -53,28 +63,32 @@
 	
 	<!-- customerList -->
 	<div class="container">
-	    <div class="row col-md-10 col-md-offset-1 custyle">
+	    <div class="row col-md-12  custyle">
 	    <table class="table table-striped custab">
 	    <thead>
 	        <tr>
-	            <th>ID</th>
-	            <th>NAME</th>
-	            <th>ADDRESS</th>
-	            <th>PHONE</th>
-	            <th>CREATE_DATE</th>
-	            <th>UPDATE_DATE</th>
+	            <th>ORDER NO</th>
+	            <th>CUSTOMER ID</th>
+	            <th>GOODS NAME</th>
+	            <th>ORDER PRICE</th>
+	            <th>ORDER QUANTITY</th>
+	            <th>ORDER STATE</th>
+	            <th>CREATE DATE</th>
+	            <th>UPDATE DATE</th>
 	        </tr>
 	    </thead>
 	    	<%
-	    		for (Customer c : customerList) {
+	    		for (Map<String, Object> o : ordersList) {
 	    	%>
 	            <tr>
-	                <td><a href="<%=request.getContextPath() %>/admin/adminCustomerOrders.jsp?customerId=<%=c.getCustomerId() %>"><%=c.getCustomerId() %></a></td>
-	                <td><%=c.getCustomerName() %></td>
-	                <td><%=c.getCustomerAddress() %></td>
-	                <td><%=c.getCustomerTelephone() %></td>
-	                <td><%=c.getCreateDate() %></td>
-	                <td><%=c.getUpdateDate() %></td>
+	                <td><%=o.get("orderNo")%></td>
+	                <td><%=o.get("customerId") %></td>
+	                <td><%=o.get("goodsName") %></td>
+	                <td><%=df.format(o.get("orderPrice")) %></td>
+	                <td><%=o.get("orderQuantity") %></td>
+	                <td><%=o.get("orderState") %></td>
+	                <td><%=o.get("createDate") %></td>
+	                <td><%=o.get("updateDate") %></td>
 	            </tr>
 	           <%
 	    		}
@@ -83,7 +97,7 @@
 	    
 	    <!-- 페이징 -->
 		   <%
-		   		int lastPage = customerService.getCustomerListLastPage(rowPerPage);
+		   		int lastPage = ordersService.getOrdersListLastPage(rowPerPage);
 		   		
 		   %>
 		   <div class="text-center">
@@ -94,20 +108,20 @@
 					end = (end < lastPage) ? end : lastPage; // lastPage 이상이 되면 end페이지 번호가 lastPage
 					if (currentPage != 1) {
 				%>
-					<li class="page-item"><a class="page-link pink-moon" href="<%=request.getContextPath() %>/admin/customerList.jsp?currentPage=<%=1%>"><<</a></li>
-					<li class="page-item"><a class="page-link pink-moon" href="<%=request.getContextPath() %>/admin/customerList.jsp?currentPage=<%=currentPage-1%>">Previous</a></li>
+					<li class="page-item"><a class="page-link cool-blues" href="<%=request.getContextPath() %>/admin/adminCustomerOrders.jsp?currentPage=<%=1%>"><<</a></li>
+					<li class="page-item"><a class="page-link cool-blues" href="<%=request.getContextPath() %>/admin/adminCustomerOrders.jsp?currentPage=<%=currentPage-1%>">Previous</a></li>
 				<%		
 					}
 					for (int i = start; i <= end; i++){
 				%>	
-					<li class="page-item"><a class="page-link pink-moon" href="<%=request.getContextPath() %>/admin/customerList.jsp?currentPage=<%=i%>"><%=i %></a></li>
+					<li class="page-item"><a class="page-link cool-blues" href="<%=request.getContextPath() %>/admin/adminCustomerOrders.jsp?currentPage=<%=i%>"><%=i %></a></li>
 				<%
 						
 					}
 					if (currentPage != lastPage) {
 				%>
-					<li class="page-item"><a class="page-link pink-moon" href="<%=request.getContextPath() %>/admin/customerList.jsp?currentPage=<%=currentPage+1%>">Next</a></li>
-					<li class="page-item"><a class="page-link pink-moon" href="<%=request.getContextPath() %>/admin/customerList.jsp?currentPage=<%=lastPage%>">>></a></li>
+					<li class="page-item"><a class="page-link cool-blues" href="<%=request.getContextPath() %>/admin/adminCustomerOrders.jsp?currentPage=<%=currentPage+1%>">Next</a></li>
+					<li class="page-item"><a class="page-link cool-blues" href="<%=request.getContextPath() %>/admin/adminCustomerOrders.jsp?currentPage=<%=lastPage%>">>></a></li>
 				<%
 					}
 				%>
