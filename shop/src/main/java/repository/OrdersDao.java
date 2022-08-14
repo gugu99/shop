@@ -15,9 +15,10 @@ public class OrdersDao {
 	
 	// 주문 상태값 수정
 	public int updateOrdersState(Connection conn, Orders paramOrders) throws SQLException {
+		System.out.println("\n--------------------OrdersDao.updateOrdersState()");
 		
 		int result = 0;
-		String sql = "UPDATE orders SET order_state = ? WHERE order_no = ?";
+		String sql = "UPDATE orders SET order_state = ?, update_date = NOW() WHERE order_no = ?";
 		PreparedStatement stmt = null;
 		
 		try {

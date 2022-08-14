@@ -60,7 +60,7 @@
 	
 	<!-- customerList -->
 	<div class="container">
-	    <div class="row   custyle">
+	    <div class="row col-md-12  custyle">
 	    <table class="table table-striped custab">
 	    <thead>
 	        <tr>
