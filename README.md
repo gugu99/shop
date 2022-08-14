@@ -10,6 +10,7 @@ Model1 쇼핑몰
 ### 2. 고객관리 - [CustomerService](https://github.com/gugu99/shop/blob/master/shop/src/main/java/service/CustomerService.java) / [CustomerDao](https://github.com/gugu99/shop/blob/master/shop/src/main/java/repository/CustomerDao.java)
   - 고객 목록
     - customerList
+    - adminCustomerOrders(특정 고객의 주문 목록)
   - 고객 삭제(강제 탈퇴) -> 알림 구현X
   - 비밀번호 수정 -> 알림 구현X
 ### 3. 사원관리 - [EmployeeService](https://github.com/gugu99/shop/blob/master/shop/src/main/java/service/EmployeeService.java) / [EmployeeDao](https://github.com/gugu99/shop/blob/master/shop/src/main/java/repository/EmployeeDao.java)
@@ -20,7 +21,6 @@ Model1 쇼핑몰
 ### 4. 상품관리 - [GoodsService](https://github.com/gugu99/shop/blob/master/shop/src/main/java/service/GoodsService.java) / [GoodsDao](https://github.com/gugu99/shop/blob/master/shop/src/main/java/repository/GoodsDao.java) / [GoodsImgDao](https://github.com/gugu99/shop/blob/master/shop/src/main/java/repository/GoodsImgDao.java)
   - 상품 목록
     - adminGoodsList
-    - adminCustomerOrders(특정 고객의 주문 목록)
   - 상품 상세
     - goodsAndImgOne
     - (+review)
