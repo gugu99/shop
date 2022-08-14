@@ -4,6 +4,11 @@
     pageEncoding="UTF-8"%>
 <%
 	System.out.println("\n--------------------modifyEmployeeActiveAction.jsp");
+	
+	if (session.getAttribute("user") == null || !session.getAttribute("user").equals("employee")) { // 로그인상태가 아닌경우 loginForm.jsp로 이동 -> 로그인상태지만 사원이 아닌경우 index.jsp로 이동
+		response.sendRedirect(request.getContextPath()+"/loginForm.jsp");
+		return;
+	}
 	// 파라미터
 	String employeeId = request.getParameter("employeeId");
 	String employeeActive = request.getParameter("employeeActive"); // 기존 권한
