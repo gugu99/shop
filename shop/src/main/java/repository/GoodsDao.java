@@ -19,9 +19,8 @@ public class GoodsDao {
 		System.out.println("\n--------------------GoodsDao.customerGoodsListByPage()");
 		
 		List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
-		// String sql = "SELECT g.goods_no goodsNo, g.goods_name goodsName, g.goods_price goodsPrice, g.sold_out soldOut FROM goods g INNER JOIN goods_img gi ON g.goods_no = gi.goods_no ORDER BY g.create_date LIMIT ?,?";
+		String sql = "SELECT g.goods_no goodsNo, g.goods_name goodsName, g.goods_price goodsPrice, g.sold_out soldOut, gi.filename filename FROM goods g INNER JOIN goods_img gi ON g.goods_no = gi.goods_no ORDER BY g.create_date DESC LIMIT ?,?";
 		// 판매량이 많은 상품부터
-		String sql ="";
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
@@ -50,6 +49,11 @@ public class GoodsDao {
 			
 			while (rs.next()) {
 				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("goodsNo", rs.getInt("goodsNo"));
+				map.put("goodsName", rs.getString("goodsName"));
+				map.put("goodsPrice", rs.getInt("goodsPrice"));
+				map.put("soldOut", rs.getString("soldOut"));
+				map.put("filename", rs.getString("filename"));
 				
 				list.add(map);
 			}
@@ -61,7 +65,7 @@ public class GoodsDao {
 				stmt.close();
 			}
 		}
-		
+		System.out.println(list);
 		return list;
 	}
 	
@@ -247,7 +251,7 @@ public class GoodsDao {
 		System.out.println("\n--------------------GoodsDao.selectGoodsListByPage()");
 		
 		List<Goods> list = new ArrayList<Goods>();
-		String sql = "SELECT goods_no goodsNo, goods_name goodsName, goods_price goodsPrice, sold_out soldOut, create_date createDate, update_date updateDate FROM goods LIMIT ?,?";
+		String sql = "SELECT goods_no goodsNo, goods_name goodsName, goods_price goodsPrice, sold_out soldOut, create_date createDate, update_date updateDate FROM goods ORDER BY create_date DESC LIMIT ?,?";
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		

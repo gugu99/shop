@@ -55,7 +55,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-5 col-sm-offset-1">
-		            <img width="450" height="427" alt="상품이미지" src="<%=request.getContextPath() %>/upload/<%=goodsMap.get("filename")%>">
+		            <img width="320" height="327" alt="상품이미지" src="<%=request.getContextPath() %>/upload/<%=goodsMap.get("filename")%>">
 				</div>
 				<div class="col-sm-6">
 					<table class="table table-striped custab">

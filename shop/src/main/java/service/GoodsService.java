@@ -2,6 +2,7 @@ package service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,10 +21,32 @@ public class GoodsService {
 	
 	// 고객 상품리스트
 	public List<Map<String, Object>> getCustomerGoodsListByPage(int rowPerPage, int currentPage) {
+
+		List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+		Connection conn = null;
+		dbUtil = new DBUtil();
 		
-		// customerDao 호출
+		int beginRow = (currentPage -1) * rowPerPage;
 		
-		return null;
+		try {
+			conn = dbUtil.getConnection();
+			
+			goodsDao = new GoodsDao();
+			
+			list = goodsDao.selectCustomerGoodsListByPage(conn, rowPerPage, beginRow);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return list;
 	}
 	
 	// 상품 수정하기
