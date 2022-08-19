@@ -23,6 +23,7 @@
 	
 	// list
 	List<Map<String, Object>> goodsList = goodsService.getCustomerGoodsListByPage(rowPerPage, currentPage);
+	System.out.println(goodsList);
 %>
 <!-- 분리하면 servlet / 연결기술 forword(request, response) / jsp  -->
 
@@ -56,74 +57,101 @@
 	
 	<%@include file="/header.jsp" %><!-- header -->
 	
+	<div class="category-tab"><!--category-tab-->
+		<div class="row col-md-8 col-md-offset-2">
+			<ul class="nav nav-tabs">
+				<li><a href="#tshirt" data-toggle="tab">최신순</a></li>
+				<li><a href="#blazers" data-toggle="tab">인기순</a></li>
+				<li><a href="#sunglass" data-toggle="tab">판매량순</a></li>
+				<li><a href="#kids" data-toggle="tab">높은가격</a></li>
+				<li><a href="#poloshirt" data-toggle="tab">높은가격</a></li>
+			</ul>
+		</div>
+	</div>
+	
 	<div class="container">
-		<div class="features_items">
-    	<%
-    		for(Map<String, Object> m : goodsList) {
-    	%>
-    	
-    	<div class="col-sm-3">
-			<div class="product-image-wrapper">
-				<div class="single-products">
-						<div class="productinfo text-center">
-							<img src="<%=request.getContextPath() %>/upload/<%=m.get("filename") %>" alt="상품이미지" />
-							<h2><%=df.format(m.get("goodsPrice")) %></h2>
-							<p><%=m.get("goodsName") %></p>
-							<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-						</div>
-						<div class="product-overlay">
-							<div class="overlay-content">
+		<div class="row">
+			<div class="col-sm-12 padding-right">
+				<div class="features_items">
+		    	<%
+		    	int index = 1;
+		    	
+		    		for(Map<String, Object> m : goodsList) {
+		    	%>
+		    	
+		    	<div class="col-sm-3">
+					<div class="product-image-wrapper">
+						<div class="single-products">
+							<div class="productinfo text-center">
+								<img src="<%=request.getContextPath() %>/upload/<%=m.get("filename") %>" alt="상품이미지" />
 								<h2><%=df.format(m.get("goodsPrice")) %></h2>
 								<p><%=m.get("goodsName") %></p>
 								<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
 							</div>
+							<div class="product-overlay">
+								<div class="overlay-content">
+									<h2><%=df.format(m.get("goodsPrice")) %></h2>
+									<p><%=m.get("goodsName") %></p>
+									<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+								</div>
+							</div>
 						</div>
+						<div class="choose">
+							<ul class="nav nav-pills nav-justified">
+								<li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
+								<li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
+							</ul>
+						</div>
+					</div>
 				</div>
-				<div class="choose">
-					<ul class="nav nav-pills nav-justified">
-						<li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-						<li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-        <%
-    		}
-    	%>
-	    <!-- 페이징 -->
-		   <%
-		   		int lastPage = goodsService.getGoodsListLastPage(rowPerPage);
-		   		
-		   %>
-		   <div class="text-center">
-		   		<ul class="mypagination justify-content-center">
-		   		<%	
-			   		int end = (int)(Math.ceil(currentPage / (double)rowPerPage) * rowPerPage);
-					int start = end - rowPerPage + 1;
-					end = (end < lastPage) ? end : lastPage; // lastPage 이상이 되면 end페이지 번호가 lastPage
-					if (currentPage != 1) {
-				%>
-					<li class="page-item"><a class="page-link cool-blues" href="<%=request.getContextPath() %>/customerGoodsList.jsp?currentPage=<%=1%>"><<</a></li>
-					<li class="page-item"><a class="page-link cool-blues" href="<%=request.getContextPath() %>/customerGoodsList.jsp?currentPage=<%=currentPage-1%>">Previous</a></li>
-				<%		
-					}
-					for (int i = start; i <= end; i++){
-				%>	
-					<li class="page-item"><a class="page-link cool-blues" href="<%=request.getContextPath() %>/customerGoodsList.jsp?currentPage=<%=i%>"><%=i %></a></li>
-				<%
-						
-					}
-					if (currentPage != lastPage) {
-				%>
-					<li class="page-item"><a class="page-link cool-blues" href="<%=request.getContextPath() %>/customerGoodsList.jsp?currentPage=<%=currentPage+1%>">Next</a></li>
-					<li class="page-item"><a class="page-link cool-blues" href="<%=request.getContextPath() %>/customerGoodsList.jsp?currentPage=<%=lastPage%>">>></a></li>
-				<%
-					}
-				%>
-		   		</ul>
-		   </div>  
-		   </div>
+		        <%
+		        
+		        if(index % 4 == 0){
+		        	%>
+		        	</div><div class="row">
+		        	<%
+		        }
+		        
+		        index++;
+		    		}
+		    	%>
+		    	</div>
+	    	</div>
+	   </div>
 	</div>
+	
+	<!-- 페이징 -->
+   <%
+   		int lastPage = goodsService.getGoodsListLastPage(rowPerPage);
+   		
+   %>
+   <div class="text-center">
+   		<ul class="pagination justify-content-center">
+   		<%	
+	   		int end = (int)(Math.ceil(currentPage / (double)rowPerPage) * rowPerPage);
+			int start = end - rowPerPage + 1;
+			end = (end < lastPage) ? end : lastPage; // lastPage 이상이 되면 end페이지 번호가 lastPage
+			if (currentPage != 1) {
+		%>
+			<li class="page-item"><a class="page-link" href="<%=request.getContextPath() %>/customerGoodsList.jsp?currentPage=<%=1%>"><<</a></li>
+			<li class="page-item"><a class="page-link" href="<%=request.getContextPath() %>/customerGoodsList.jsp?currentPage=<%=currentPage-1%>">Previous</a></li>
+		<%		
+			}
+			for (int i = start; i <= end; i++){
+		%>	
+			<li class="page-item"><a class="page-link" href="<%=request.getContextPath() %>/customerGoodsList.jsp?currentPage=<%=i%>"><%=i %></a></li>
+		<%
+				
+			}
+			if (currentPage != lastPage) {
+		%>
+			<li class="page-item"><a class="page-link" href="<%=request.getContextPath() %>/customerGoodsList.jsp?currentPage=<%=currentPage+1%>">Next</a></li>
+			<li class="page-item"><a class="page-link" href="<%=request.getContextPath() %>/customerGoodsList.jsp?currentPage=<%=lastPage%>">>></a></li>
+		<%
+			}
+		%>
+   		</ul>
+   </div>  
 		
 	<%@include file="/footer.jsp" %><!-- footer -->
 	
