@@ -15,8 +15,11 @@
 	String customerId = request.getParameter("customerId");
 	String customerPass = request.getParameter("customerPass");
 	String customerName = request.getParameter("customerName");
-	String customerAddress = request.getParameter("customerAddress");
+	String addr = request.getParameter("addr");
+	String detailAddress = request.getParameter("detailAddress");
 	String customerTelephone = request.getParameter("customerTelephone");
+	
+	String customerAddress = addr + " " + detailAddress;
 	
 	// 디버깅
 	System.out.println("customerId --- " + customerId);
