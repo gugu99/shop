@@ -34,7 +34,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Admin Index</title>
+    <title>GUGU99 SHOP</title>
     <link href="<%=request.getContextPath()%>/css/bootstrap.min.css" rel="stylesheet">
     <link href="<%=request.getContextPath()%>/css/font-awesome.min.css" rel="stylesheet">
     <link href="<%=request.getContextPath()%>/css/prettyPhoto.css" rel="stylesheet">
@@ -64,7 +64,7 @@
 				<li><a href="#blazers" data-toggle="tab">인기순</a></li>
 				<li><a href="#sunglass" data-toggle="tab">판매량순</a></li>
 				<li><a href="#kids" data-toggle="tab">높은가격</a></li>
-				<li><a href="#poloshirt" data-toggle="tab">높은가격</a></li>
+				<li><a href="#poloshirt" data-toggle="tab">낮은가격</a></li>
 			</ul>
 		</div>
 	</div>
@@ -83,16 +83,16 @@
 					<div class="product-image-wrapper">
 						<div class="single-products">
 							<div class="productinfo text-center">
-								<img src="<%=request.getContextPath() %>/upload/<%=m.get("filename") %>" alt="상품이미지" />
+								<a href="<%=request.getContextPath() %>/goods/customerGoodsAndImgOne.jsp?goodsNo=<%=m.get("goodsNo")%>"><img src="<%=request.getContextPath() %>/upload/<%=m.get("filename") %>" alt="상품이미지" /></a>
 								<h2><%=df.format(m.get("goodsPrice")) %></h2>
 								<p><%=m.get("goodsName") %></p>
-								<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+								<a href="<%=request.getContextPath() %>/goods/customerGoodsAndImgOne.jsp?goodsNo=<%=m.get("goodsNo")%>" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
 							</div>
 							<div class="product-overlay">
 								<div class="overlay-content">
 									<h2><%=df.format(m.get("goodsPrice")) %></h2>
 									<p><%=m.get("goodsName") %></p>
-									<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+									<a href="<%=request.getContextPath() %>/goods/customerGoodsAndImgOne.jsp?goodsNo=<%=m.get("goodsNo")%>" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
 								</div>
 							</div>
 						</div>
@@ -133,20 +133,20 @@
 			end = (end < lastPage) ? end : lastPage; // lastPage 이상이 되면 end페이지 번호가 lastPage
 			if (currentPage != 1) {
 		%>
-			<li class="page-item"><a class="page-link" href="<%=request.getContextPath() %>/customerGoodsList.jsp?currentPage=<%=1%>"><<</a></li>
-			<li class="page-item"><a class="page-link" href="<%=request.getContextPath() %>/customerGoodsList.jsp?currentPage=<%=currentPage-1%>">Previous</a></li>
+			<li class="page-item"><a class="page-link" href="<%=request.getContextPath() %>/goods/customerGoodsList.jsp?currentPage=<%=1%>"><<</a></li>
+			<li class="page-item"><a class="page-link" href="<%=request.getContextPath() %>/goods/customerGoodsList.jsp?currentPage=<%=currentPage-1%>">Previous</a></li>
 		<%		
 			}
 			for (int i = start; i <= end; i++){
 		%>	
-			<li class="page-item"><a class="page-link" href="<%=request.getContextPath() %>/customerGoodsList.jsp?currentPage=<%=i%>"><%=i %></a></li>
+			<li class="page-item"><a class="page-link" href="<%=request.getContextPath() %>/goods/customerGoodsList.jsp?currentPage=<%=i%>"><%=i %></a></li>
 		<%
 				
 			}
 			if (currentPage != lastPage) {
 		%>
-			<li class="page-item"><a class="page-link" href="<%=request.getContextPath() %>/customerGoodsList.jsp?currentPage=<%=currentPage+1%>">Next</a></li>
-			<li class="page-item"><a class="page-link" href="<%=request.getContextPath() %>/customerGoodsList.jsp?currentPage=<%=lastPage%>">>></a></li>
+			<li class="page-item"><a class="page-link" href="<%=request.getContextPath() %>/goods/customerGoodsList.jsp?currentPage=<%=currentPage+1%>">Next</a></li>
+			<li class="page-item"><a class="page-link" href="<%=request.getContextPath() %>/goods/customerGoodsList.jsp?currentPage=<%=lastPage%>">>></a></li>
 		<%
 			}
 		%>
