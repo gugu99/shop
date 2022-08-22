@@ -13,8 +13,84 @@ import vo.Orders;
 
 public class OrdersService {
 
-	DBUtil dbUtil;
-	OrdersDao ordersDao;
+	private DBUtil dbUtil;
+	private OrdersDao ordersDao;
+	
+	// 주문 수정하기 (주문하고 결제를 했다는 가정하(배송전)에 배송정보만 수정할 수 있음)
+	public boolean modifyOrders(Orders paramOrders) {
+		
+		Connection conn = null;
+		dbUtil = new DBUtil();
+		
+		try {
+			conn = dbUtil.getConnection();
+			conn.setAutoCommit(false); // 자동 커밋을 막아준다.
+			
+			ordersDao = new OrdersDao();
+			if (ordersDao.updateOrders(conn, paramOrders) != 1) { // 수정 실패하면
+				throw new Exception(); // 예외를 발생시킨다.
+			}
+			
+			conn.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			return false;
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return true;
+	}
+	
+	// 주문하기(고객) - 상품 한개씩만 주문 가능
+	public boolean addOrder(Orders paramOrders) {
+		
+		Connection conn = null;
+		dbUtil = new DBUtil();
+		
+		try {
+			conn = dbUtil.getConnection();
+			conn.setAutoCommit(false); // 자동 커밋을 막는다.
+			
+			ordersDao = new OrdersDao();
+			if (ordersDao.insertOrder(conn, paramOrders) != 1) { // 주문 입력 실패하면
+				throw new Exception(); // 예외를 발생시킨다.
+			}
+			
+			conn.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			return false;
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return true;
+	}
 	
 	// 주문 상태값 수정
 	public boolean modifyOrdersState(Orders paramOrders) {

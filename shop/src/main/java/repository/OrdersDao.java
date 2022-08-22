@@ -13,7 +13,66 @@ import vo.Orders;
 
 public class OrdersDao {
 	
-	// 주문 상태값 수정
+	// 주문 수정하기 (주문하고 결제를 했다는 가정하에 배송정보만 수정할 수 있음)
+	public int updateOrders(Connection conn, Orders paramOrders) throws SQLException {
+		System.out.println("\n--------------------OrdersDao.updateOrders()");
+		
+		int result = 0;
+		String sql = "UPDATE orders SET order_addr = ?, update_date = NOW() WERE order_no = ?";
+		PreparedStatement stmt = null;
+		
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, paramOrders.getOrderAddr());
+			stmt.setInt(2, paramOrders.getOrderNo());
+			
+			System.out.println("stmt --- " + stmt);
+			
+			result = stmt.executeUpdate();
+			
+			System.out.println("result --- " + result);
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		
+		
+		return result;
+	}
+	
+	// 주문하기(고객) - 상품 한개씩만 주문 가능
+	public int insertOrder(Connection conn, Orders paramOrders) throws SQLException {
+		System.out.println("\n--------------------OrdersDao.insertOrder()");
+		
+		int result = 0;
+		String sql = "INSERT INTO orders (goods_no, customer_id, order_price, order_quantity, order_addr, update_date, create_date) VALUES (?,?,?,?,?,NOW(),NOW())";
+		PreparedStatement stmt = null;
+		
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, paramOrders.getGoodsNo());
+			stmt.setString(2, paramOrders.getCustomerId());
+			stmt.setInt(3, paramOrders.getOrderPrice());
+			stmt.setInt(4, paramOrders.getOrderQuantity());
+			stmt.setString(5, paramOrders.getOrderAddr());
+			
+			System.out.println("stmt --- " + stmt);
+			
+			result = stmt.executeUpdate();
+			
+			System.out.println("result --- " + result);
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		
+		return result;
+	}
+	
+	
+	// 주문 상태값 수정(관리자 -> 모든 상태값 수정가능 / 고객 -> 주문 취소)
 	public int updateOrdersState(Connection conn, Orders paramOrders) throws SQLException {
 		System.out.println("\n--------------------OrdersDao.updateOrdersState()");
 		
@@ -123,7 +182,7 @@ public class OrdersDao {
 		
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>(); // 다형성
 		String sql = "SELECT o.order_no orderNo, o.customer_id customerId, o.order_price orderPrice, o.order_quantity orderQuantity, o.order_state orderState, o.create_date createDate, o.update_date updateDate, g.goods_name goodsName "
-					+"FROM orders o INNER JOIN goods g ON o.order_no = g.goods_no ORDER BY o.create_date DESC LIMIT ?,?";
+					+"FROM orders o INNER JOIN goods g ON o.goods_no = g.goods_no ORDER BY o.create_date DESC LIMIT ?,?";
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
@@ -148,6 +207,8 @@ public class OrdersDao {
 				map.put("goodsName", rs.getString("goodsName"));
 				
 				list.add(map);
+				
+				System.out.println("list --- " + list);
 			}
 		} finally {
 			if (rs != null) {
@@ -161,13 +222,15 @@ public class OrdersDao {
 		return list;
 	}
 	
+	// 
+	
 	// 고객 한명의 주문 목록(관리자, 고객)
 	public List<Map<String, Object>> selectOrdersListByCustomer(Connection conn, String customerId , int rowPerPage, int beginRow) throws SQLException {
 		System.out.println("\n--------------------OrdersDao.selectOrdersListByCustomer()");
 		
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>(); // 다형성
 		String sql = "SELECT o.order_no orderNo, o.customer_id customerId, o.order_price orderPrice, o.order_quantity orderQuantity, o.order_state orderState, o.create_date createDate, o.update_date updateDate, g.goods_name goodsName "
-				+ "FROM orders o INNER JOIN goods g ON o.order_no = g.goods_no WHERE o.customer_id = ? ORDER BY o.create_date DESC LIMIT ?,?";
+				+ "FROM orders o INNER JOIN goods g ON o.goods_no = g.goods_no WHERE o.customer_id = ? ORDER BY o.create_date DESC LIMIT ?,?";
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
