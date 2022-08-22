@@ -12,6 +12,88 @@ import vo.Customer;
 
 public class CustomerDao {
 	
+	// 회원정보 수정
+	public int updateCustomer(Connection conn, Customer paramCustomer) throws SQLException {
+		System.out.println("\n--------------------CustomerDao.updateCustomer()");
+		
+		int result = 0;
+		String sql = "UPDATE customer SET customer_name = ?, customer_address = ?, customer_telephone = ?, update_date = NOW() WHERE customer_id = ?";
+		PreparedStatement stmt = null;
+		
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, paramCustomer.getCustomerName());
+			stmt.setString(2, paramCustomer.getCustomerAddress());
+			stmt.setString(3, paramCustomer.getCustomerTelephone());
+			stmt.setString(4, paramCustomer.getCustomerId());
+			
+			System.out.println("stmt --- " + stmt); // 디버깅
+			
+			result = stmt.executeUpdate();
+			
+			System.out.println("result --- " + result); // 디버깅
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		
+		return result;
+	}
+	
+	// 관리자에 의한 비밀번호 변경 
+	public int updatePassByEmployee(Connection conn, String customerId) throws SQLException {
+		System.out.println("\n--------------------CustomerDao.updatePassByEmployee()");
+		
+		int result = 0;
+		String sql = "UPDATE customer SET customer_pass = ?, update_date = NOW() WHERE customer_id = ?";
+		PreparedStatement stmt = null;
+		
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, customerId);
+			
+			System.out.println("stmt --- " + stmt); // 디버깅
+			
+			result = stmt.executeUpdate();
+			
+			System.out.println("result --- " + result); // 디버깅
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		
+		return result;
+	}
+	
+	// 관리자에 의한 강제탈퇴
+	public int deleteCustomerByEmployee(Connection conn, String customerId) throws SQLException {
+		System.out.println("\n--------------------CustomerDao.deleteCustomerByEmployee()");
+		
+		int result = 0;
+		String sql = "DELETE FROM customer WHERE customer_id = ?";
+		PreparedStatement stmt = null;
+		
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, customerId);
+			
+			System.out.println("stmt --- " + stmt); // 디버깅
+			
+			result = stmt.executeUpdate();
+			
+			System.out.println("result --- " + result); // 디버깅
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		
+		return result;
+	}
+	
+	
 	// 고객 리스트 count(*) 구하기
 	public int selectCustmoerCount(Connection conn) throws SQLException {
 		System.out.println("\n--------------------CustomerDao.selectCustmoerCount()");

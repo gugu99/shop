@@ -16,6 +16,125 @@ public class CustomerService {
 	private CustomerDao customerDao;
 	private OutIdDao outIdDao;
 	
+	// 회원정보 수정
+	public boolean modifyCustomer(Customer paramCustomer) {
+		
+		Connection conn = null;
+		dbUtil = new DBUtil();
+		
+		try {
+			conn = dbUtil.getConnection();
+			conn.setAutoCommit(false); // 자동 커밋을 막는다.
+			
+			customerDao = new CustomerDao();
+			if (customerDao.updateCustomer(conn, paramCustomer) != 1) { // 회원정보 수정 실패하면 
+				throw new Exception(); // 예외를 발생시킨다.
+			}
+			
+			conn.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			return false;
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return true;
+	}
+	
+	// 관리자에 의한 비밀번호 변경
+	public boolean modifyPassByEmployee(String customerId) {
+		
+		Connection conn = null;
+		dbUtil = new DBUtil();
+		
+		try {
+			conn = dbUtil.getConnection();
+			conn.setAutoCommit(false); // 자동 커밋을 막는다.
+			
+			customerDao = new CustomerDao();
+			if (customerDao.updatePassByEmployee(conn, customerId) != 1) { // 비밀번호 수정 실패하면
+				throw new Exception(); // 예외를 발생시킨다.
+			}
+			
+			conn.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			return false;
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return true;
+	}
+	
+	// 관리자에 의한 강제탈퇴 (customer 테이블에서 삭제 후 outid 테이블에 입력)
+	public boolean removeCustomerByEmployee(String customerId) {
+		
+		Connection conn = null;
+		dbUtil = new DBUtil();
+		
+		try {
+			conn = dbUtil.getConnection();
+			conn.setAutoCommit(false); // 자동커밋을 막아준다.
+			
+			customerDao = new CustomerDao();
+			if (customerDao.deleteCustomerByEmployee(conn, customerId) != 1) { // 탈퇴를 실패하면
+				throw new Exception(); // 예외를 발생시킨다.
+			}
+			
+			outIdDao = new OutIdDao();
+			if (outIdDao.insertOutId(conn, customerId) != 1) { // 탈퇴한 아이디 입력 실패하면
+				throw new Exception(); // 예외를 발생시킨다.
+			}
+			
+			conn.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			return false;
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return true;
+	}
+	
 	// customerList.jsp에서 호출(고객 리스트 라스트페이지 구하기)
 	public int getCustomerListLastPage(int rowPerPage) {
 		
