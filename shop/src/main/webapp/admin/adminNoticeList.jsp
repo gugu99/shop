@@ -54,7 +54,7 @@
 	
 	<%@include file="/admin/adminMenu.jsp" %><!-- button menu -->
 	
-	<!-- customerList -->
+	<!-- noticeList -->
 	<div class="container">
 	    <div class="row col-md-10 col-md-offset-1 custyle">
 	    <table class="table table-striped custab">

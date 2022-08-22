@@ -191,7 +191,7 @@ public class GoodsDao {
 				// goods
 				map.put("goodsNo", rs.getInt("goodsNo"));
 				map.put("goodsName", rs.getString("goodsName"));
-				map.put("goodsPrice", rs.getString("goodsPrice"));
+				map.put("goodsPrice", rs.getInt("goodsPrice"));
 				map.put("goodsUpdateDate", rs.getString("gUpdateDate"));
 				map.put("goodsCreateDate", rs.getString("gCreateDate"));
 				map.put("soldOut", rs.getString("soldOut"));

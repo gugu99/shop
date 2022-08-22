@@ -10,8 +10,8 @@ import vo.Notice;
 
 public class NoticeService {
 
-	DBUtil dbUtil;
-	NoticeDao noticeDao;
+	private DBUtil dbUtil;
+	private NoticeDao noticeDao;
 	
 	// 공지 삭제
 	public boolean removeNotice(int noticeNo) {
