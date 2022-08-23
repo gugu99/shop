@@ -16,6 +16,33 @@ public class CustomerService {
 	private CustomerDao customerDao;
 	private OutIdDao outIdDao;
 	
+	// 회원정보 가져오기
+	public Customer getCustomerOne(String customerId) {
+		
+		Customer customer = null;
+		Connection conn = null;
+		dbUtil = new DBUtil();
+		
+		try {
+			conn = dbUtil.getConnection();
+			
+			customerDao = new CustomerDao();
+			customer = customerDao.selectCustomerOne(conn, customerId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return customer;
+	}
+	
 	// 회원정보 수정
 	public boolean modifyCustomer(Customer paramCustomer) {
 		
@@ -55,7 +82,7 @@ public class CustomerService {
 	}
 	
 	// 관리자에 의한 비밀번호 변경
-	public boolean modifyPassByEmployee(String customerId) {
+	public boolean modifyPassByEmployee(Customer paramCustomer) {
 		
 		Connection conn = null;
 		dbUtil = new DBUtil();
@@ -65,7 +92,7 @@ public class CustomerService {
 			conn.setAutoCommit(false); // 자동 커밋을 막는다.
 			
 			customerDao = new CustomerDao();
-			if (customerDao.updatePassByEmployee(conn, customerId) != 1) { // 비밀번호 수정 실패하면
+			if (customerDao.updatePassByEmployee(conn, paramCustomer) != 1) { // 비밀번호 수정 실패하면
 				throw new Exception(); // 예외를 발생시킨다.
 			}
 			
