@@ -3,7 +3,7 @@
 <%@page import="service.ReviewService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-	if (session.getAttribute("user") == null) { // 로그인 상태가 아닐 경우 loginForm.jsp로 이동
+	if (session.getAttribute("user") == null && session.getAttribute("user").equals("customer")) { // 로그인 상태가 아닐 경우 loginForm.jsp로 이동
 		response.sendRedirect(request.getContextPath()+"/loginForm.jsp");
 		return;
 	}	
@@ -58,13 +58,14 @@
 	    <div class="text-center">
 	    	<h2>리뷰</h2>
 	    </div>
-	    <table class="table table-striped custab">
+	    <form action="<%=request.getContextPath()%>/review/modifyReviewAction.jsp" method="post">
+	    	 <table class="table table-striped custab">
 	    	<%
 	    		for (Map<String, Object> m : reviewList) {
 	    	%>
 	        <tr>
 	        	<th>주문번호 :</th>
-	            <td><%=m.get("orderNo") %></td>
+	            <td><input type="text" name="orderNo" value="<%=m.get("orderNo") %>" readonly></td>
 	            <th>상품명 :</th>
 	            <td><%=m.get("goodsName") %></td>
 	            <th>작성일 :</th>
@@ -74,12 +75,22 @@
 	        </tr>
 	        <tr>
 	            <th>내용</th>
-	            <td colspan="8"><%=m.get("reviewContent") %></td>
+	            <td colspan="6"><textarea rows="3" class="form-control" name="reviewContent"><%=m.get("reviewContent") %></textarea></td>
+	            <td class="text-right">
+	            	<button type="submit" class="btn btn-info btn-xs">
+				    	<span class="glyphicon glyphicon-edit"></span> Edit
+				    </button>
+				    <button type="button" class="btn btn-danger btn-xs" onclick="location.href='<%=request.getContextPath()%>/review/removeReviewAction.jsp?orderNo=<%=m.get("orderNo")%>'">
+				    	<span class="glyphicon glyphicon-edit"></span> Del
+				    </button>
+	            </td>
 	        </tr>
 	        <%
 	    		}
 	        %>
 	    </table>
+	    </form>
+	   
 	    	<%
 	    		if (reviewList.size() == 0) {
 	    	%>
