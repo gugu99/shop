@@ -44,7 +44,7 @@
 								<li><a href="<%=request.getContextPath() %>/customerMyPage.jsp"><i class="fa fa-user"></i> Account</a></li>
 								<!-- <li><a href=""><i class="fa fa-star"></i> Wishlist</a></li> -->
 								<!-- <li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li> -->
-								<li><a href="<%=request.getContextPath() %>/cart/customerCartList.jsp?"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+								<li><a href="<%=request.getContextPath() %>/cart/cartList.jsp?"><i class="fa fa-shopping-cart"></i> Cart</a></li>
 								<%
 									if (session.getAttribute("user") == null) { // 로그인 상태가 아닐 경우 
 								%>
