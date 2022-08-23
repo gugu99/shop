@@ -67,7 +67,7 @@
 				</div>
 				<div class="col-sm-6">
 					<form action="<%=request.getContextPath() %>/cart/addCartAction.jsp" method="post">
-						<input type="hidden" name="goodsNo" value="<%=goodsMap.get("goodsName") %>">
+						<input type="hidden" name="goodsNo" value="<%=goodsNo %>">
 				    	<input type="hidden" name="orderPrice" value="<%=goodsMap.get("goodsPrice") %>">
 						<table class="table table-striped custab">
 						        <tr>
@@ -83,7 +83,7 @@
 					        		<th>수량</th>
 					        		<td>
 					        			<button type="button" id="plusBtn" class="btn btn-light">+</button>
-										<input class="text-center" type="text" name="cartQuantity" id="orderQuantity" value="" readonly>
+										<input class="text-center" type="text" name="cartQuantity" id="cartQuantity" value="" readonly>
 										<button type="button" id="minusBtn" class="btn btn-light">-</button>
 					        		</td>
 				        		</tr>
@@ -100,7 +100,7 @@
 				    </form>
 				    
 				    <form action="<%=request.getContextPath() %>/order/addOrderForm.jsp" method="post">
-				    	<input type="hidden" name="goodsNo" value="<%=goodsMap.get("goodsName") %>">
+				    	<input type="hidden" name="goodsNo" value="<%=goodsNo %>">
 				    	<input type="hidden" name="orderPrice" value="<%=goodsMap.get("goodsPrice") %>">
 				    	<input type="hidden" name="orderQuantity" id="orderQuantity" value="">
 				    	<div class="text-right">
@@ -186,26 +186,26 @@
 	
 	<script>
 		$(function(){
-			$('#orderQuantity').val(1);
+			$('#cartQuantity').val(1);
 			$('#orderTotalPrice').val(<%=goodsMap.get("goodsPrice") %>);
 			
 			$('#plusBtn').click(function(){
-				if ($('#orderQuantity').val() == 100){
-					$('#orderQuantity').val($('#orderQuantity').val());
+				if ($('#cartQuantity').val() == 100){
+					$('#cartQuantity').val($('#cartQuantity').val());
 					return;
 				}
+				$('#cartQuantity').val(parseInt($('#cartQuantity').val())+1);
 				$('#orderQuantity').val(parseInt($('#orderQuantity').val())+1);
-				$('#cartQuantity').val(parseInt($('#orderQuantity').val())+1);
-				$('#orderTotalPrice').val(<%=goodsMap.get("goodsPrice") %>*$('#orderQuantity').val());
+				$('#orderTotalPrice').val(<%=goodsMap.get("goodsPrice") %>*$('#cartQuantity').val());
 			});
 			$('#minusBtn').click(function(){
-				if ($('#orderQuantity').val() == 1){
-					$('#orderQuantity').val($('#orderQuantity').val());
+				if ($('#cartQuantity').val() == 1){
+					$('#cartQuantity').val($('#cartQuantity').val());
 					return;
 				}
+				$('#cartQuantity').val($('#cartQuantity').val()-1);
 				$('#orderQuantity').val($('#orderQuantity').val()-1);
-				$('#cartQuantity').val($('#orderQuantity').val()-1);
-				$('#orderTotalPrice').val(<%=goodsMap.get("goodsPrice") %>*$('#orderQuantity').val());
+				$('#orderTotalPrice').val(<%=goodsMap.get("goodsPrice") %>*$('#cartQuantity').val());
 			});
 		});
 	</script>
