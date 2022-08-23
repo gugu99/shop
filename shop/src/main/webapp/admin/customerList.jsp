@@ -63,6 +63,7 @@
 	            <th>PHONE</th>
 	            <th>CREATE_DATE</th>
 	            <th>UPDATE_DATE</th>
+	            <th>수정하기</th>
 	        </tr>
 	    </thead>
 	    	<%
@@ -75,6 +76,11 @@
 	                <td><%=c.getCustomerTelephone() %></td>
 	                <td><%=c.getCreateDate() %></td>
 	                <td><%=c.getUpdateDate() %></td>
+	                <td>
+	                	<button type="button" class="btn btn-info btn-xs" onclick="location.href='<%=request.getContextPath()%>/admin/modifyCustomerForm.jsp?customerId=<%=c.getCustomerId()%>'">
+					    	<span class="glyphicon glyphicon-edit"></span> Edit
+					    </button>
+	                </td>
 	            </tr>
 	           <%
 	    		}

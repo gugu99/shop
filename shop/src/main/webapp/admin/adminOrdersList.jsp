@@ -54,98 +54,98 @@
 
 <body>
 	
-	<%@include file="/header.jsp" %><!-- header -->
+<%@include file="/header.jsp" %><!-- header -->
+
+<%@include file="/admin/adminMenu.jsp" %><!-- button menu -->
+
+<!-- customerList -->
+<div class="container">
+    <div class="row col-md-12  custyle">
+    <table class="table table-striped custab">
+    <thead>
+        <tr>
+            <th>ORDER NO</th>
+            <th>CUSTOMER ID</th>
+            <th>GOODS NAME</th>
+            <th>ORDER PRICE</th>
+            <th>ORDER QUANTITY</th>
+            <th>CREATE DATE</th>
+            <th>UPDATE DATE</th>
+            <th>ORDER STATE</th>
+        </tr>
+    </thead>
+    	<%
+    		for (Map<String, Object> o : ordersList) {
+    	%>
+            <tr>
+                <td><a href="<%=request.getContextPath() %>/admin/adminOrdersOne.jsp?orderNo=<%=o.get("orderNo") %>"><%=o.get("orderNo")%></a></td>
+                <td><a href="<%=request.getContextPath() %>/admin/adminCustomerOrders.jsp?customerId=<%=o.get("customerId") %>"><%=o.get("customerId") %></a></td>
+                <td><%=o.get("goodsName") %></td>
+                <td><%=df.format(o.get("orderPrice")) %></td>
+                <td><%=o.get("orderQuantity") %></td>
+                <td><%=o.get("createDate") %></td>
+                <td><%=o.get("updateDate") %></td>
+                <td>
+                	<form action="<%=request.getContextPath() %>/admin/modifyOrderStateAction.jsp" method="post">
+                		<input type="hidden" name="orderNo" value="<%=o.get("orderNo") %>" />
+                		<input type="hidden" name="preOrderState" value="<%=o.get("orderState") %>" />
+                		<select name="orderState">
+                			<option value="default"><%=o.get("orderState") %></option>
+                			<option value="주문취소">주문취소</option>
+                			<option value="결제왼료">결제왼료</option>
+							<option value="배송시작">배송시작</option>
+							<option value="배송중">배송중</option>
+							<option value="배송완료">배송완료</option>
+							<option value="구매확정">구매확정</option>
+							<option value="환불">환불</option>
+                		</select>
+					    <button type="submit" class="btn btn-info btn-xs">
+					    	<span class="glyphicon glyphicon-edit"></span> Edit
+					    </button>
+					</form>
+                </td>
+            </tr>
+           <%
+    		}
+           %>
+    </table>
+    
+    <!-- 페이징 -->
+	   <%
+	   		int lastPage = ordersService.getOrdersListLastPage(rowPerPage);
+	   		
+	   %>
+	   <div class="text-center">
+	   		<ul class="mypagination justify-content-center">
+	   		<%	
+		   		int end = (int)(Math.ceil(currentPage / (double)rowPerPage) * rowPerPage);
+				int start = end - rowPerPage + 1;
+				end = (end < lastPage) ? end : lastPage; // lastPage 이상이 되면 end페이지 번호가 lastPage
+				if (currentPage != 1) {
+			%>
+				<li class="page-item"><a class="page-link cool-blues" href="<%=request.getContextPath() %>/admin/adminOrdersList.jsp?currentPage=<%=1%>"><<</a></li>
+				<li class="page-item"><a class="page-link cool-blues" href="<%=request.getContextPath() %>/admin/adminOrdersList.jsp?currentPage=<%=currentPage-1%>">Previous</a></li>
+			<%		
+				}
+				for (int i = start; i <= end; i++){
+			%>	
+				<li class="page-item"><a class="page-link cool-blues" href="<%=request.getContextPath() %>/admin/adminOrdersList.jsp?currentPage=<%=i%>"><%=i %></a></li>
+			<%
+					
+				}
+				if (currentPage != lastPage) {
+			%>
+				<li class="page-item"><a class="page-link cool-blues" href="<%=request.getContextPath() %>/admin/adminOrdersList.jsp?currentPage=<%=currentPage+1%>">Next</a></li>
+				<li class="page-item"><a class="page-link cool-blues" href="<%=request.getContextPath() %>/admin/adminOrdersList.jsp?currentPage=<%=lastPage%>">>></a></li>
+			<%
+				}
+			%>
+	   		</ul>
+	   </div>  
+    </div>
+</div>
 	
-	<%@include file="/admin/adminMenu.jsp" %><!-- button menu -->
-	
-	<!-- customerList -->
-	<div class="container">
-	    <div class="row col-md-12  custyle">
-	    <table class="table table-striped custab">
-	    <thead>
-	        <tr>
-	            <th>ORDER NO</th>
-	            <th>CUSTOMER ID</th>
-	            <th>GOODS NAME</th>
-	            <th>ORDER PRICE</th>
-	            <th>ORDER QUANTITY</th>
-	            <th>CREATE DATE</th>
-	            <th>UPDATE DATE</th>
-	            <th>ORDER STATE</th>
-	        </tr>
-	    </thead>
-	    	<%
-	    		for (Map<String, Object> o : ordersList) {
-	    	%>
-	            <tr>
-	                <td><a href="<%=request.getContextPath() %>/admin/adminOrdersOne.jsp?orderNo=<%=o.get("orderNo") %>"><%=o.get("orderNo")%></a></td>
-	                <td><a href="<%=request.getContextPath() %>/admin/adminCustomerOrders.jsp?customerId=<%=o.get("customerId") %>"><%=o.get("customerId") %></a></td>
-	                <td><%=o.get("goodsName") %></td>
-	                <td><%=df.format(o.get("orderPrice")) %></td>
-	                <td><%=o.get("orderQuantity") %></td>
-	                <td><%=o.get("createDate") %></td>
-	                <td><%=o.get("updateDate") %></td>
-	                <td>
-	                	<form action="<%=request.getContextPath() %>/admin/modifyOrderStateAction.jsp" method="post">
-	                		<input type="hidden" name="orderNo" value="<%=o.get("orderNo") %>" />
-	                		<input type="hidden" name="preOrderState" value="<%=o.get("orderState") %>" />
-	                		<select name="orderState">
-	                			<option value="default"><%=o.get("orderState") %></option>
-	                			<option value="주문취소">주문취소</option>
-	                			<option value="결제왼료">결제왼료</option>
-								<option value="배송시작">배송시작</option>
-								<option value="배송중">배송중</option>
-								<option value="배송완료">배송완료</option>
-								<option value="구매확정">구매확정</option>
-								<option value="환불">환불</option>
-	                		</select>
-						    <button type="submit" class="btn btn-info btn-xs">
-						    	<span class="glyphicon glyphicon-edit"></span> Edit
-						    </button>
-						</form>
-	                </td>
-	            </tr>
-	           <%
-	    		}
-	           %>
-	    </table>
-	    
-	    <!-- 페이징 -->
-		   <%
-		   		int lastPage = ordersService.getOrdersListLastPage(rowPerPage);
-		   		
-		   %>
-		   <div class="text-center">
-		   		<ul class="mypagination justify-content-center">
-		   		<%	
-			   		int end = (int)(Math.ceil(currentPage / (double)rowPerPage) * rowPerPage);
-					int start = end - rowPerPage + 1;
-					end = (end < lastPage) ? end : lastPage; // lastPage 이상이 되면 end페이지 번호가 lastPage
-					if (currentPage != 1) {
-				%>
-					<li class="page-item"><a class="page-link cool-blues" href="<%=request.getContextPath() %>/admin/adminOrdersList.jsp?currentPage=<%=1%>"><<</a></li>
-					<li class="page-item"><a class="page-link cool-blues" href="<%=request.getContextPath() %>/admin/adminOrdersList.jsp?currentPage=<%=currentPage-1%>">Previous</a></li>
-				<%		
-					}
-					for (int i = start; i <= end; i++){
-				%>	
-					<li class="page-item"><a class="page-link cool-blues" href="<%=request.getContextPath() %>/admin/adminOrdersList.jsp?currentPage=<%=i%>"><%=i %></a></li>
-				<%
-						
-					}
-					if (currentPage != lastPage) {
-				%>
-					<li class="page-item"><a class="page-link cool-blues" href="<%=request.getContextPath() %>/admin/adminOrdersList.jsp?currentPage=<%=currentPage+1%>">Next</a></li>
-					<li class="page-item"><a class="page-link cool-blues" href="<%=request.getContextPath() %>/admin/adminOrdersList.jsp?currentPage=<%=lastPage%>">>></a></li>
-				<%
-					}
-				%>
-		   		</ul>
-		   </div>  
-	    </div>
-	</div>
-		
-	<%@include file="/footer.jsp" %><!-- footer -->
+<%@include file="/footer.jsp" %><!-- footer -->
 	
     <script src="js/jquery.js"></script>
 	<script src="js/price-range.js"></script>
