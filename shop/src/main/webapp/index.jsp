@@ -45,16 +45,18 @@
 			<br/>
 			name : <%=session.getAttribute("name") %> <!-- 로그인 이름 -->
 			<br/>
-			<form action="<%=request.getContextPath()%>/removeMember.jsp">
-				<input type="password" name="memberPass"/>
-				<button type="submit">탈퇴</button>
-			</form>
 		</div>
-		<a href="./adminIndex.jsp">관리자페이지 - 사원관리(리스트), 상품관리(리스트-삭제없음->품절로변경), 고객관리(리스트), 주문관리(리스트-배송상태), 공지관리(리스트)</a>
 	</section><!--/form-->
 	
-	<%@include file="/footer.jsp" %><!-- footer -->
+	<div class="text-center">
+		<input type="text" name="orderPrice" id="orderPrice" value="1500" readonly>
+		<input type="text" name="orderTotalPrice" id="orderTotalPrice" value="" readonly>
+		<button type="button" id="plusBtn" class="btn btn-light">+</button>
+		<input type="text" name="orderQuantity" id="orderQuantity" value="" readonly>
+		<button type="button" id="minusBtn" class="btn btn-light">-</button>
+	</div>
 	
+	<%@include file="/footer.jsp" %><!-- footer -->
 	
     <script src="js/jquery.js"></script>
 	<script src="js/price-range.js"></script>
