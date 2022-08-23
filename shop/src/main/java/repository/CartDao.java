@@ -136,7 +136,7 @@ public class CartDao {
 		System.out.println("\n--------------------CartDao.selectCartByCustomer");
 		
 		List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
-		String sql = "c.goods_no goodsNo, c.cart_quantity cartQuantity, c.update_date updateDate, c.create_date createDate, g.goods_name goodsName, gi.filename "
+		String sql = "SELECT c.goods_no goodsNo, c.cart_quantity cartQuantity, c.update_date updateDate, c.create_date createDate, g.goods_name goodsName, g.goods_price goodsPrice, gi.filename filename "
 				+ "FROM cart c INNER JOIN goods g ON c.goods_no = g.goods_no INNER JOIN goods_img gi ON c.goods_no = gi.goods_no WHERE c.customer_id = ? ORDER BY c.create_date DESC LIMIT ?,?";
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -153,7 +153,15 @@ public class CartDao {
 			
 			while (rs.next()) {
 				Map<String, Object> map = new HashMap<String, Object>();
-				map.put("", rs.getInt("goodsNo"));
+				map.put("goodsNo", rs.getInt("goodsNo"));
+				map.put("cartQuantity", rs.getInt("cartQuantity"));
+				map.put("createDate", rs.getString("createDate"));
+				map.put("updateDate", rs.getString("updateDate"));
+				map.put("goodsName", rs.getString("goodsName"));
+				map.put("goodsPrice", rs.getInt("goodsPrice"));
+				map.put("filename", rs.getString("filename"));
+				
+				list.add(map);
 			}
 		} finally {
 			if (rs != null) {
