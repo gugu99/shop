@@ -12,6 +12,41 @@ import vo.Customer;
 
 public class CustomerDao {
 	
+	// 회원정보 조회
+	public Customer selectCustomerOne(Connection conn, String customerId) throws SQLException {
+		System.out.println("\n--------------------CustomerDao.selectCustomerOne()");
+		
+		Customer customer = new Customer();;
+		String sql = "SELECT customer_name customerName, customer_address customerAddress, customer_telephone customerTelephone FROM customer WHERE customer_id = ?";
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, customerId);
+			
+			System.out.println("stmt --- " + stmt); // 디버깅
+			
+			rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				customer.setCustomerName(rs.getString("customerName"));
+				customer.setCustomerAddress(rs.getString("customerAddress"));
+				customer.setCustomerTelephone(rs.getString("customerTelephone"));
+			}
+			System.out.println("customer --- " + customer); // 디버깅
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		
+		return customer;
+	}
+	
 	// 회원정보 수정
 	public int updateCustomer(Connection conn, Customer paramCustomer) throws SQLException {
 		System.out.println("\n--------------------CustomerDao.updateCustomer()");
@@ -42,16 +77,17 @@ public class CustomerDao {
 	}
 	
 	// 관리자에 의한 비밀번호 변경 
-	public int updatePassByEmployee(Connection conn, String customerId) throws SQLException {
+	public int updatePassByEmployee(Connection conn, Customer paramCustomer) throws SQLException {
 		System.out.println("\n--------------------CustomerDao.updatePassByEmployee()");
 		
 		int result = 0;
-		String sql = "UPDATE customer SET customer_pass = ?, update_date = NOW() WHERE customer_id = ?";
+		String sql = "UPDATE customer SET customer_pass = PASSWORD(?), update_date = NOW() WHERE customer_id = ?";
 		PreparedStatement stmt = null;
 		
 		try {
 			stmt = conn.prepareStatement(sql);
-			stmt.setString(1, customerId);
+			stmt.setString(1, paramCustomer.getCustomerPass());
+			stmt.setString(2, paramCustomer.getCustomerId());
 			
 			System.out.println("stmt --- " + stmt); // 디버깅
 			
