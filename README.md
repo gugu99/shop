@@ -1,5 +1,5 @@
 # Shop
-Model1 쇼핑몰 -> [바로가기](http://52.78.242.116/shop)
+Model1 쇼핑몰 -> [바로가기](http://3.39.163.146/shop)
 ## ADMIN
 ### 1. 공지관리 - [NoticeService](https://github.com/gugu99/shop/blob/master/shop/src/main/java/service/NoticeService.java) / [NoticeDao](https://github.com/gugu99/shop/blob/master/shop/src/main/java/repository/NoticeDao.java)
   - Notice CRUD
