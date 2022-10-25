@@ -1,9 +1,20 @@
+<%@page import="service.CounterService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 	if (session.getAttribute("user") == null) { // 로그인 상태가 아닐 경우 loginForm.jsp로 이동
 		response.sendRedirect(request.getContextPath()+"/loginForm.jsp");
 		return;
 	}	
+
+	// CounterService counterService = new CounterService();
+	
+	// 방문자 수 구하기
+	// 총방문자
+	int totalCount = new CounterService().getTotalCount();
+	// 오늘방문자
+	int todayCount = new CounterService().getTodayCount();
+	// 현재 접속자 수
+	int currentCount = (Integer)(application.getAttribute("currentCounter"));
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -39,22 +50,23 @@
 	
 	<section id="form"><!--form-->
 		<div class="container">
-			user : <%=session.getAttribute("user") %> <!-- customer / employee -->
-			<br/>
-			id : <%=session.getAttribute("id") %> <!-- 로그인아이디 -->
-			<br/>
-			name : <%=session.getAttribute("name") %> <!-- 로그인 이름 -->
-			<br/>
+			<h1 class="text-center">
+		    	<%=session.getAttribute("id") %>(<%=session.getAttribute("user") %>) - <%=session.getAttribute("name") %> 님 반갑습니다. 
+		    </h1>
 		</div>
 	</section><!--/form-->
 	
-	<div class="text-center">
-		<input type="text" name="orderPrice" id="orderPrice" value="1500" readonly>
-		<input type="text" name="orderTotalPrice" id="orderTotalPrice" value="" readonly>
-		<button type="button" id="plusBtn" class="btn btn-light">+</button>
-		<input type="text" name="orderQuantity" id="orderQuantity" value="" readonly>
-		<button type="button" id="minusBtn" class="btn btn-light">-</button>
-	</div>
+	<section id="form"><!--form-->
+		<div class="container">
+			<h3 class="text-center">
+		    	오늘 방문자 수 : <%=todayCount %> 
+				<br/>
+				현재 방문자 수 : <%=currentCount %> 
+				<br/>
+				전체 방문자 수 : <%=totalCount %> 
+		    </h3>
+		</div>
+	</section><!--/form-->
 	
 	<%@include file="/footer.jsp" %><!-- footer -->
 	
