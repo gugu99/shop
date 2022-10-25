@@ -48,9 +48,9 @@
 						%>
 						<form action="<%=request.getContextPath() %>/customerLoginAction.jsp" method="post" id="customerForm">
 							<label for="customerId">ID</label>
-							<input type="text" name="customerId" id="customerId" placeholder="Enter Id" />
+							<input type="text" name="customerId" id="customerId" value="gugu" placeholder="Enter Id" />
 							<label for="customerPass">PASSWORD</label>
-							<input type="password" name="customerPass" id="customerPass" placeholder="Enter Password" />
+							<input type="password" name="customerPass" id="customerPass" value="1234" placeholder="Enter Password" />
 							<span>
 								<input type="checkbox" class="checkbox"> 
 								Keep me signed in
@@ -74,9 +74,9 @@
 						%>
 						<form action="<%=request.getContextPath() %>/employeeLoginAction.jsp" method="post" id="employeeForm">
 							<label for="employeeId">ID</label>
-							<input type="text" name="employeeId" id="employeeId" placeholder="Enter Id" />
+							<input type="text" name="employeeId" id="employeeId" value="admin" placeholder="Enter Id" />
 							<label for="employeePass">PASSWORD</label>
-							<input type="password" name="employeePass" id="employeePass" placeholder="Enter Password" />
+							<input type="password" name="employeePass" id="employeePass" value="1234" placeholder="Enter Password" />
 							<span>
 								<input type="checkbox" class="checkbox"> 
 								Keep me signed in

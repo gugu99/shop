@@ -88,7 +88,7 @@
 	                		<input type="hidden" name="orderNo" value="<%=o.get("orderNo") %>" />
 	                		<input type="hidden" name="orderState" value="취소" />
 	                		<%
-	                			if (!o.get("orderState").equals("취소")) {
+	                			if (!o.get("orderState").equals("취소") && o.get("orderState").equals("결제완료")) {
 	                		%>
 						    <button type="submit" class="btn btn-danger btn-xs">
 						    	<span class="glyphicon glyphicon-edit"></span> 취소

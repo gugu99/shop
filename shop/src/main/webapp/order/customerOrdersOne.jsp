@@ -2,7 +2,7 @@
 <%@page import="service.OrdersService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-	System.out.println("\n--------------------adminOrdersOne.jsp");	
+	System.out.println("\n--------------------customerOrdersOne.jsp");	
 
 	if (session.getAttribute("user") == null || !session.getAttribute("user").equals("customer")) { // 로그인상태가 아닌경우 loginForm.jsp로 이동 -> 로그인상태지만 사원이 아닌경우 index.jsp로 이동
 		response.sendRedirect(request.getContextPath()+"/loginForm.jsp");
@@ -24,7 +24,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Admin Index</title>
+    <title>GUGU99 SHOP</title>
     <link href="<%=request.getContextPath()%>/css/bootstrap.min.css" rel="stylesheet">
     <link href="<%=request.getContextPath()%>/css/font-awesome.min.css" rel="stylesheet">
     <link href="<%=request.getContextPath()%>/css/prettyPhoto.css" rel="stylesheet">
