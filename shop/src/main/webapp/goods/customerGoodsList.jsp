@@ -8,6 +8,11 @@
 	// Controller : java clss <- Servlet
 	int rowPerPage = 20;
 	int currentPage = 1;
+	String sort = "new"; // 기본값을 최신순으로
+	
+	if (request.getParameter("sort") != null) {
+		sort = request.getParameter("sort");
+	}
 	
 	if (request.getParameter("rowPerPage") != null) {
 		rowPerPage = Integer.parseInt(request.getParameter("rowPerPage"));
@@ -22,7 +27,7 @@
 	GoodsService goodsService = new GoodsService();
 	
 	// list
-	List<Map<String, Object>> goodsList = goodsService.getCustomerGoodsListByPage(rowPerPage, currentPage);
+	List<Map<String, Object>> goodsList = goodsService.getCustomerGoodsListByPage(rowPerPage, currentPage, sort);
 	System.out.println(goodsList);
 %>
 <!-- 분리하면 servlet / 연결기술 forword(request, response) / jsp  -->
@@ -58,13 +63,13 @@
 	<%@include file="/header.jsp" %><!-- header -->
 	
 	<div class="category-tab"><!--category-tab-->
-		<div class="row col-md-8 col-md-offset-2">
+		<div class="row col-md-10 col-md-offset-1">
 			<ul class="nav nav-tabs">
-				<li><a href="#tshirt" data-toggle="tab">최신순</a></li>
-				<li><a href="#blazers" data-toggle="tab">인기순</a></li>
-				<li><a href="#sunglass" data-toggle="tab">판매량순</a></li>
-				<li><a href="#kids" data-toggle="tab">높은가격</a></li>
-				<li><a href="#poloshirt" data-toggle="tab">낮은가격</a></li>
+				<li><a href="<%=request.getContextPath()%>/goods/customerGoodsList.jsp?sort=new" data-toggle="tab">최신순</a></li>
+				<li><a href="<%=request.getContextPath()%>/goods/customerGoodsList.jsp?sort=popular" data-toggle="tab">인기순</a></li>
+				<li><a href="<%=request.getContextPath()%>/goods/customerGoodsList.jsp?sort=sales" data-toggle="tab">판매량순</a></li>
+				<li><a href="<%=request.getContextPath()%>/goods/customerGoodsList.jsp?sort=highPrice" data-toggle="tab">높은가격</a></li>
+				<li><a href="<%=request.getContextPath()%>/goods/customerGoodsList.jsp?sort=lowPrice" data-toggle="tab">낮은가격</a></li>
 			</ul>
 		</div>
 	</div>
@@ -88,13 +93,13 @@
 								<p><%=m.get("goodsName") %></p>
 								<a href="<%=request.getContextPath() %>/goods/customerGoodsAndImgOne.jsp?goodsNo=<%=m.get("goodsNo")%>" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
 							</div>
-							<div class="product-overlay">
+							<%-- <div class="product-overlay">
 								<div class="overlay-content">
 									<h2><%=df.format(m.get("goodsPrice")) %></h2>
 									<p><%=m.get("goodsName") %></p>
 									<a href="<%=request.getContextPath() %>/goods/customerGoodsAndImgOne.jsp?goodsNo=<%=m.get("goodsNo")%>" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
 								</div>
-							</div>
+							</div> --%>
 						</div>
 						<div class="choose">
 							<ul class="nav nav-pills nav-justified">

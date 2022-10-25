@@ -14,29 +14,61 @@ import vo.Goods;
 
 public class GoodsDao {
 	
-	// 고갹 상품리스트 페이지에서 사용
-	public List<Map<String, Object>> selectCustomerGoodsListByPage(Connection conn, int rowPerPage, int beginRow) throws SQLException {
+	// 상품 조회수 증가
+	public int updateGoodsHit(Connection conn, int goodsNo) throws SQLException {
+		System.out.println("\n--------------------GoodsDao.updateGoodsHit()");
+		
+		int result = 0;
+		String sql = "UPDATE goods SET hit = hit+1 WHERE goods_no = ?";
+		PreparedStatement stmt = null;
+		
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, goodsNo);
+			
+			System.out.println("stmt --- " + stmt); // 디버깅
+			
+			result = stmt.executeUpdate();
+			
+			System.out.println("result --- " + result); // 디버깅
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		
+		return result;
+	}
+	
+	// 고객 상품리스트 페이지에서 사용
+	public List<Map<String, Object>> selectCustomerGoodsListByPage(Connection conn, int rowPerPage, int beginRow, String sort) throws SQLException {
 		System.out.println("\n--------------------GoodsDao.customerGoodsListByPage()");
+		System.out.println("sort --- " + sort);
 		
 		List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
-		String sql = "SELECT g.goods_no goodsNo, g.goods_name goodsName, g.goods_price goodsPrice, g.sold_out soldOut, gi.filename filename FROM goods g INNER JOIN goods_img gi ON g.goods_no = gi.goods_no ORDER BY g.create_date DESC LIMIT ?,?";
+		String sql = "SELECT g.goods_no goodsNo, g.goods_name goodsName, g.goods_price goodsPrice, g.sold_out soldOut, gi.filename filename FROM goods g INNER JOIN goods_img gi ON g.goods_no = gi.goods_no";
+		
+		switch (sort) {
+		case "popular":
+			sql += " ORDER BY g.hit DESC";
+			break;
+		case "sales":
+			sql = "SELECT g.goods_no goodsNo, g.goods_name goodsName, g.goods_price goodsPrice, g.sold_out soldOut, gi.filename, ifnull(sum(o.order_quantity), 0) sum FROM goods g LEFT OUTER JOIN orders o ON g.goods_no = o.goods_no INNER JOIN goods_img gi ON g.goods_no = gi.goods_no GROUP BY g.goods_no ORDER BY sum DESC";
+			break;
+		case "highPrice":
+			sql += " ORDER BY g.goods_price DESC";
+			break;
+		case "lowPrice":
+			sql += " ORDER BY g.goods_price";
+			break;
+		default:
+			sql += " ORDER BY g.create_date DESC";
+			break;
+		}
+		sql += " LIMIT ?,?";
 		// 판매량이 많은 상품부터
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		
-		/*
-		 SELECT g.*, IFNULL(t.sumNum, 0) t.sumNum, gi.*  FROM goods g LEFT JOIN (SELECT goods_no, sum(order_quanity) sumNum FROM orders GROUP BY goods_no) t ON g.goods_no = t.goods_no INNER JOIN goods_img gi ON g.goods_no = gi.goods_no ORDER BY IFNULL(t.sumNum, 0) DESC
-		 
-		 SELECT g.*, gi.*  
-		 FROM 
-		 goods g LEFT JOIN (SELECT goods_no, sum(order_quanity) sumNum 
-		 						FROM orders GROUP BY goods_no) t 
-		 						ON g.goods_no = t.goods_no 
-		 							INNER JOIN goods_img gi 
-		 							ON g.goods_no = gi.goods_no 
-		 ORDER BY IFNULL(t.sumNum, 0) DESC
-		 */
-		
 		
 		try {
 			stmt = conn.prepareStatement(sql);

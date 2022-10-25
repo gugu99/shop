@@ -19,8 +19,45 @@ public class GoodsService {
 	private GoodsDao goodsDao;
 	private GoodsImgDao goodsImgDao;
 	
+	// 상품 조회수 증가
+	public boolean modifyGoodsHit(int goodsNo) {
+		
+		Connection conn = null;
+		dbUtil = new DBUtil();
+		
+		try {
+			conn = dbUtil.getConnection();
+			conn.setAutoCommit(false); // 자동 커밋을 막는다.
+			
+			goodsDao = new GoodsDao();
+			if(goodsDao.updateGoodsHit(conn, goodsNo) != 1) {
+				throw new Exception(); // 강제로 예외를 만든다.
+			}
+			conn.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			return false;
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return true;
+	}
+	
 	// 고객 상품리스트
-	public List<Map<String, Object>> getCustomerGoodsListByPage(int rowPerPage, int currentPage) {
+	public List<Map<String, Object>> getCustomerGoodsListByPage(int rowPerPage, int currentPage, String sort) {
 
 		List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
 		Connection conn = null;
@@ -33,7 +70,7 @@ public class GoodsService {
 			
 			goodsDao = new GoodsDao();
 			
-			list = goodsDao.selectCustomerGoodsListByPage(conn, rowPerPage, beginRow);
+			list = goodsDao.selectCustomerGoodsListByPage(conn, rowPerPage, beginRow, sort);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
