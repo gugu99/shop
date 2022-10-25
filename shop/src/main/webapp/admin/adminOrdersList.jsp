@@ -92,7 +92,7 @@
                 		<select name="orderState">
                 			<option value="default"><%=o.get("orderState") %></option>
                 			<option value="주문취소">주문취소</option>
-                			<option value="결제왼료">결제왼료</option>
+                			<option value="결제완료">결제완료</option>
 							<option value="배송시작">배송시작</option>
 							<option value="배송중">배송중</option>
 							<option value="배송완료">배송완료</option>
