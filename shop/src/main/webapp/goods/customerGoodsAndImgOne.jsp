@@ -1,5 +1,4 @@
 <%@page import="service.ReviewService"%>
-<%@page import="java.util.Set"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="vo.Goods"%>
@@ -13,6 +12,12 @@
 	GoodsService goodsService = new GoodsService();
 	
 	goodsMap = goodsService.getGoodsAndImgOne(goodsNo);
+	
+	// 조회수 증가
+	boolean hit = goodsService.modifyGoodsHit(goodsNo);
+	if (hit) {
+		System.out.println("상품 조회수 증가"); // 디버깅
+	}
 	
 	DecimalFormat df = new DecimalFormat("###,###"); // 가격 천단위에 ,넣기
 	
@@ -83,7 +88,7 @@
 					        		<th>수량</th>
 					        		<td>
 					        			<button type="button" id="plusBtn" class="btn btn-light">+</button>
-										<input class="text-center" type="text" name="cartQuantity" id="cartQuantity" value="" readonly>
+										<input class="text-center" type="text" name="cartQuantity" id="cartQuantity" readonly>
 										<button type="button" id="minusBtn" class="btn btn-light">-</button>
 					        		</td>
 				        		</tr>
@@ -102,7 +107,7 @@
 				    <form action="<%=request.getContextPath() %>/order/addOrderForm.jsp" method="post">
 				    	<input type="hidden" name="goodsNo" value="<%=goodsNo %>">
 				    	<input type="hidden" name="orderPrice" value="<%=goodsMap.get("goodsPrice") %>">
-				    	<input type="hidden" name="orderQuantity" id="orderQuantity" value="">
+				    	<input type="hidden" name="orderQuantity" id="orderQuantity" >
 				    	<div class="text-right">
 				    		<button type="submit" class="btn btn-green-moon btn-rounded">바로 구매하기</button>
 				    	</div>
@@ -187,7 +192,10 @@
 	<script>
 		$(function(){
 			$('#cartQuantity').val(1);
+			$('#orderQuantity').val(1);
 			$('#orderTotalPrice').val(<%=goodsMap.get("goodsPrice") %>);
+			
+			console.log();
 			
 			$('#plusBtn').click(function(){
 				if ($('#cartQuantity').val() == 100){

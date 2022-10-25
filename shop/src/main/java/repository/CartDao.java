@@ -46,7 +46,7 @@ public class CartDao {
 		System.out.println("\n--------------------CartDao.updateCartQuantity");
 		
 		int result = 0;
-		String sql = "UPDATE cart SET cart_quantity = ? WEHRE goods_no = ? AND customer_id = ?";
+		String sql = "UPDATE cart SET cart_quantity = ? WHERE goods_no = ? AND customer_id = ?";
 		PreparedStatement stmt = null;
 		
 		try {

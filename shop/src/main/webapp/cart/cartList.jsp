@@ -57,7 +57,7 @@
 	    <div class="text-center">
 	    	<h2>장바구니</h2>
 	    </div>
-	    <form action="<%=request.getContextPath()%>/review/modifyReviewAction.jsp" method="post">
+	   
 	    	 <table class="table table-striped custab">
 	    	<%
 	    		for (Map<String, Object> m : cartList) {
@@ -69,15 +69,25 @@
 	            <th>상품가격 :</th>
 	            <td><%=m.get("goodsPrice") %></td>
 	            <th>상품수량 :</th>
-	            <td><%=m.get("cartQuantity") %></td>
-	            <th>작성일 :</th>
-	            <td><%=m.get("createDate") %></td>
-	            <th>수정일 :</th>
-	            <td><%=m.get("updateDate") %></td>
 	            <td>
-	            	<button type="submit" class="btn btn-info btn-xs">
-				    	<span class="glyphicon glyphicon-edit"></span> 주문
-				    </button>
+	            	 <form action="<%=request.getContextPath()%>/cart/modifyCartQuantityAction.jsp" method="post">
+	            		 <input type="hidden" name="goodsNo" value="<%=m.get("goodsNo") %>">
+		            	<input type="number" name="cartQuantity" value="<%=m.get("cartQuantity") %>">
+		            	<button type="submit" class="btn btn-warning btn-xs">
+					    	<span class="glyphicon glyphicon-edit"></span> 수정
+				   	    </button>
+				    </form>
+	            </td>
+	            <td>
+	            	 <form action="<%=request.getContextPath()%>/order/addOrderForm.jsp" method="post">
+	            	 	<input type="hidden" name="cart" value="cart">
+		            	<input type="hidden" name="goodsNo" value="<%=m.get("goodsNo") %>">
+		            	<input type="hidden" name="orderPrice" value="<%=m.get("goodsPrice") %>">
+		            	<input type="hidden" name="orderQuantity" value="<%=m.get("cartQuantity") %>">
+		            	<button type="submit" class="btn btn-info btn-xs">
+					    	<span class="glyphicon glyphicon-edit"></span> 주문
+					    </button>
+				     </form>
 				    <button type="button" class="btn btn-danger btn-xs" onclick="location.href='<%=request.getContextPath()%>/cart/removeCartAction.jsp?goodsNo=<%=m.get("goodsNo")%>'">
 				    	<span class="glyphicon glyphicon-edit"></span> 삭제
 				    </button>
@@ -88,7 +98,7 @@
 	    		}
 	        %>
 	    </table>
-	    </form>
+	   
 	   
 	    	<%
 	    		if (cartList.size() == 0) {
